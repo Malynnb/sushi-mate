@@ -1,0 +1,411 @@
+
+.landing-page {
+  min-height: 100vh;
+  padding: 28px 7%;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  position: relative;
+  background:
+    linear-gradient(
+      rgba(7, 8, 28, 0.48),
+      rgba(7, 8, 28, 0.65)
+    ),
+    url('./images/japan-night.png') center / cover fixed;
+
+  color: white;
+  font-family: Arial, sans-serif;
+}
+
+
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: relative;
+  z-index: 2;
+}
+
+.brand {
+  font-weight: 900;
+  letter-spacing: 2px;
+  color: #ff6b9d;
+}
+
+.edition, .eyebrow, .disclaimer, footer {
+  font-size: 11px;
+  letter-spacing: 2px;
+  color: #a4a9c6;
+}
+
+.hero {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  margin: auto;
+  padding: 90px 0 65px;
+}
+
+.eyebrow {
+  display: inline-block;
+  border: 1px solid #343c67;
+  padding: 12px 18px;
+  border-radius: 30px;
+}
+
+.status-dot {
+  display: inline-block;
+  width: 7px;
+  height: 7px;
+  margin-right: 8px;
+  border-radius: 50%;
+  background: #69f0cf;
+  box-shadow: 0 0 12px #69f0cf;
+}
+
+h1 {
+  margin: 35px 0 20px;
+  font-size: clamp(48px, 9vw, 105px);
+  line-height: 0.98;
+  font-weight: 1000;
+  letter-spacing: -5px;
+}
+
+.sushi-word {
+  color: #ff6b9d;
+  text-shadow: 0 0 35px #ff398b55;
+}
+
+.prove-word {
+  color: #69e7ff;
+  text-shadow: 0 0 35px #35cfff55;
+}
+
+.intro {
+  max-width: 430px;
+  margin: 28px auto;
+  color: #b8bed7;
+  font-size: 17px;
+  line-height: 1.8;
+}
+
+.start-button {
+  padding: 18px 36px;
+  border: none;
+  border-radius: 7px;
+  background: linear-gradient(100deg, #ff5797, #a66cff);
+  color: white;
+  font-size: 14px;
+  font-weight: 900;
+  letter-spacing: 2px;
+  cursor: pointer;
+  box-shadow: 0 0 30px #ff579744;
+}
+
+.start-button:hover {
+  transform: translateY(-4px);
+}
+
+.start-button span {
+  margin-left: 18px;
+}
+
+.disclaimer {
+  margin-top: 22px;
+}
+
+footer {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  justify-content: space-between;
+  gap: 15px;
+  border-top: 1px solid #292e4c;
+  padding-top: 22px;
+}
+
+.floating-sushi {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.sushi {
+  position: absolute;
+  display: block;
+  font-size: clamp(28px, 4vw, 55px);
+  filter: drop-shadow(0 0 12px #ff55c866);
+  animation: sushi-float 5s ease-in-out infinite;
+}
+
+.sushi-1 { top: 20%; left: 8%; }
+.sushi-2 { top: 38%; left: 19%; animation-delay: 1s; }
+.sushi-3 { top: 18%; right: 12%; animation-delay: 2s; }
+.sushi-4 { top: 53%; right: 18%; animation-delay: .5s; }
+.sushi-5 { bottom: 15%; left: 12%; animation-delay: 1.5s; }
+.sushi-6 { top: 30%; right: 7%; animation-delay: 2.5s; }
+.sushi-7 { bottom: 20%; right: 9%; animation-delay: 1s; }
+.sushi-8 { top: 65%; left: 25%; animation-delay: 3s; }
+.sushi-9 { top: 12%; left: 35%; animation-delay: 2s; }
+.sushi-10 { bottom: 12%; right: 35%; animation-delay: .5s; }
+.sushi-11 { top: 70%; right: 27%; animation-delay: 1.8s; }
+
+@keyframes sushi-float {
+  0%, 100% {
+    transform: translateY(0) rotate(-12deg);
+  }
+  50% {
+    transform: translateY(-22px) rotate(12deg);
+  }
+}
+
+@media (max-width: 650px) {
+  .landing-page { padding: 22px 5%; }
+  .edition { font-size: 8px; }
+  h1 { letter-spacing: -2px; }
+  .hero { padding: 75px 0; }
+  .sushi { font-size: 25px; opacity: .65; }
+  .sushi-2, .sushi-5, .sushi-8, .sushi-10 {
+    display: none;
+  }
+  footer {
+    flex-direction: column;
+    text-align: center;
+    font-size: 9px;
+  }
+}
+
+
+.quiz-panel {
+  position: relative;
+  z-index: 2;
+  width: min(650px, 100%);
+  margin: auto;
+  padding: 45px 20px 60px;
+}
+
+.quiz-topline {
+  display: flex;
+  justify-content: space-between;
+  color: #aeb6d8;
+  font-size: 12px;
+  font-weight: bold;
+  letter-spacing: 2px;
+}
+
+.progress-track {
+  width: 100%;
+  height: 6px;
+  margin: 18px 0 40px;
+  border-radius: 20px;
+  background: #252a48;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  border-radius: 20px;
+  background: linear-gradient(90deg, #ff5797, #69e7ff);
+  transition: width .3s ease;
+}
+
+.question-number {
+  color: #69e7ff;
+  font-size: 12px;
+  letter-spacing: 3px;
+  font-weight: bold;
+}
+
+.quiz-panel h2 {
+  color: white;
+  font-size: clamp(27px, 5vw, 40px);
+  line-height: 1.2;
+  margin: 15px 0 28px;
+}
+
+.answer-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.answer-option {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  width: 100%;
+  padding: 17px;
+  border: 1px solid #343c67;
+  border-radius: 9px;
+  background: #14182b;
+  color: #e5e8fa;
+  text-align: left;
+  cursor: pointer;
+  transition: .2s ease;
+}
+
+.answer-option:hover,
+.answer-option.selected {
+  border-color: #ff6b9d;
+  background: #29203e;
+  transform: translateX(4px);
+}
+
+.answer-letter {
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  width: 30px;
+  height: 30px;
+  border-radius: 7px;
+  background: #292e4c;
+  color: #69e7ff;
+  font-weight: bold;
+}
+
+.answer-option.selected .answer-letter {
+  background: #ff5797;
+  color: white;
+}
+
+.quiz-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 15px;
+  margin-top: 30px;
+}
+
+.back-button {
+  border: none;
+  background: transparent;
+  color: #aeb6d8;
+  cursor: pointer;
+  letter-spacing: 1px;
+}
+
+.start-button:disabled {
+  opacity: .4;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.completion-screen {
+  text-align: center;
+  padding: 40px 0;
+}
+
+.completion-icon {
+  font-size: 65px;
+  margin-bottom: 20px;
+}
+
+@media (max-width: 650px) {
+  .quiz-panel {
+    padding: 50px 0;
+  }
+
+  .quiz-actions {
+    align-items: stretch;
+  }
+
+  .quiz-actions .start-button {
+    padding: 15px;
+    font-size: 11px;
+  }
+}
+
+
+
+/* Custom single-colour neon chopstick cursor */
+body,
+button,
+.answer-option,
+.back-button {
+  cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'%3E%3Cpath d='M5 28 L26 4 M10 30 L29 7' stroke='%23090b18' stroke-width='5' stroke-linecap='round'/%3E%3Cpath d='M5 28 L26 4 M10 30 L29 7' stroke='%23ff6b9d' stroke-width='2.5' stroke-linecap='round'/%3E%3C/svg%3E") 26 4, auto;
+}
+
+
+
+/* QUIZ MODE: improve readability */
+.quiz-mode::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background: rgba(5, 7, 24, 0.58);
+  pointer-events: none;
+}
+
+.quiz-mode .quiz-panel {
+  background: rgba(8, 11, 30, 0.88);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(130, 145, 220, 0.25);
+  border-radius: 18px;
+  padding: 40px;
+  box-shadow: 0 15px 60px rgba(0, 0, 0, 0.35);
+}
+
+.quiz-mode .answer-option {
+  background: rgba(22, 27, 52, 0.96);
+}
+
+.quiz-mode .answer-option:hover,
+.quiz-mode .answer-option.selected {
+  background: rgba(55, 35, 75, 0.98);
+}
+
+@media (max-width: 650px) {
+  .quiz-mode .quiz-panel {
+    padding: 25px 18px;
+  }
+}
+
+
+/* RESULTS SCREEN — separate from the quiz panel styling */
+
+.quiz-mode .quiz-panel:has(.result-page) {
+  width: min(520px, 100%);
+  max-width: 100%;
+  box-sizing: border-box;
+  padding: 20px 18px 30px;
+  margin: 20px auto;
+  background: transparent;
+  border: none;
+  border-radius: 0;
+  box-shadow: none;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+
+.result-page {
+  width: 100%;
+  min-width: 0;
+  padding: 10px 0 25px;
+}
+
+.result-card-frame {
+  width: 100%;
+  max-width: 400px;
+  margin: 0 auto;
+}
+
+.finished-personality-card {
+  display: block;
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+}
+
+@media (max-width: 650px) {
+  .quiz-mode .quiz-panel:has(.result-page) {
+    padding: 12px 8px 25px;
+  }
+
+  .result-card-frame {
+    max-width: 100%;
+  }
+}
