@@ -473,7 +473,10 @@ const chooseAnswer = (answerIndex) => {
                       repeatCount="indefinite"
                       rotate="0"
                     >
-                      <mpath href="#sushi-conveyor-loop" />
+                      <mpath
+                      href="#sushi-conveyor-loop"
+                      xlinkHref="#sushi-conveyor-loop"
+                    />
                     </animateMotion>
 
                     <foreignObject
