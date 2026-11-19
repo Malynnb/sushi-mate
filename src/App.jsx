@@ -262,13 +262,15 @@ function App() {
     }
   }
 
-  const restartQuiz = () => {
-    setStarted(false)
-    setCurrentQuestion(0)
-    setAnswers({})
-    setResult(null)
-    setSelectedPlate(null)
-  }
+const restartQuiz = () => {
+  localStorage.removeItem('sushi_mate_result')
+
+  setStarted(false)
+  setCurrentQuestion(0)
+  setAnswers({})
+  setResult(null)
+  setSelectedPlate(null)
+}
 
   const chooseAnswer = (answerIndex) => {
     setAnswers({
