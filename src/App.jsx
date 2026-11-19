@@ -1,371 +1,692 @@
-
 import { useState } from 'react'
 import './App.css'
 import { calculateResult } from './data/scoring'
 import ResultCard from './components/ResultCard'
-
-const sushi = [
-  '🍣', '🍙', '🍤', '🍥', '🍱', '🥢',
-  '🍣', '🍙', '🍤', '🍥', '🍣'
-]
+import { supabase } from './supabase'
+import CommunityStats from './CommunityStats'
+import SushiConfessions from './SushiConfessions'
 
 const questions = [
   {
-    question: 'Your friend wants to quit their job tomorrow with no savings and no backup plan. Your reaction?',
+    question: 'Your friend texts: "We need to talk." What’s your immediate reaction?',
     answers: [
-      '"DO IT." Life is too short. We’ll figure it out afterwards.',
-      '“Have you calculated your savings, notice period and monthly expenses?”',
-      '“Wait, are you actually happy? What’s been happening? We need to talk.”',
-      "I've done something similar. It was a disaster. Anyway, here's my story."
+      'Whatever happened, we’re booking a trip. I refuse to process emotional damage in my own postcode.',
+      'Can you provide context, possible outcomes and an estimated duration? I need to know whether to cancel my afternoon.',
+      'My stomach just dropped. I’ve apologised to people who haven’t even accused me of anything.',
+      'Before you tell me yours, I need to tell you about the time this happened to me. It’s relevant. Probably.'
     ]
   },
   {
-    question: 'You’re given a completely free afternoon. No responsibilities, no plans. What happens?',
+    question: 'You unexpectedly have an entire afternoon free. What happens?',
     answers: [
-      'I spontaneously book something. Staying home is becoming suspicious.',
-      'I finally get around to the 17 things on my to-do list.',
-      'I do absolutely nothing. I refuse to turn leisure into unpaid employment.',
-      'I start researching something random and suddenly it’s 6 PM.'
+      'Book a spontaneous trip. My bank account says no, but my personality has already packed.',
+      'Finally do all the things I’ve been avoiding. I love a productive afternoon almost as much as I love complaining about being busy.',
+      'Cancel absolutely everything. I am unavailable for the foreseeable future. Please contact my duvet.',
+      'Google one random question and end up knowing the tax laws of a country I’ve never visited.'
     ]
   },
   {
-    question: 'You have to make a big decision. What’s your biggest obstacle?',
+    question: 'You have to make a big life decision. How do you approach it?',
     answers: [
-      'I keep imagining every possible outcome, including ones that have never happened.',
-      'I already know what I want. I just need to commit and execute.',
-      'I keep changing my mind because another possibility sounds exciting.',
-      'I know what I want, but my feelings are making the situation unnecessarily complicated.'
+      'Make a pros and cons list, then question the list, then question why I’m questioning the list. Decision pending.',
+      'Decide and execute. I don’t need a committee meeting with my own brain.',
+      'Consider every possible life. I could move to Japan, become a baker or start a goat farm. All options remain open.',
+      'My heart wants one thing, my head wants another, and my nervous system has called an emergency meeting.'
     ]
   },
   {
-    question: 'You miss a train and the next one is in an hour.',
+    question: 'You miss your train. What’s your reaction?',
     answers: [
-      'Find an alternative route. I refuse to let public transport defeat me.',
-      "Excellent. An unexpected adventure. Let's see where this goes.",
-      "I'm annoyed. I planned my day around this.",
-      'Find somewhere comfortable, get a snack and accept my new temporary residence.'
+      'Open the transport app and find another route. Deutsche Bahn may delay me, but it will not defeat my spreadsheet.',
+      'Maybe this is fate. Maybe I’ll discover a new city. Maybe I’ll meet someone interesting. Maybe I’m just romanticising poor time management.',
+      'I WAS THERE. I SAW THE TRAIN. I WATCHED THE DOORS CLOSE. This is now a personal matter.',
+      'Find a bakery. If my plans are ruined, at least my blood sugar won’t be.'
     ]
   },
   {
-    question: 'You’re hosting dinner with eight people who don’t know each other.',
+    question: 'You’re hosting a dinner party. What’s your priority?',
     answers: [
-      "I'll make sure everyone gets along. I can read the room.",
-      "I'll organise the reservation, timings and logistics. Someone has to be competent.",
-      "I'll make it an unforgettable evening. Nobody is leaving without a story.",
-      "I'll find somewhere with exceptional food. I'm not compromising on quality."
+      'Make sure everyone is comfortable. I can sense an awkward guest from three rooms away.',
+      'Reservations, timings, dietary requirements, directions. If one person is late, I will be updating the imaginary project dashboard.',
+      'I want this dinner referenced in future conversations. Ideally with the phrase, "Remember that night?"',
+      'The food. I don’t care if everyone hates each other. At least they’ll remember the dessert.'
     ]
   },
   {
     question: 'Someone makes a joke at your expense in front of everyone.',
     answers: [
-      'Laugh along. No need to make things awkward.',
-      'Give them a look that makes them reconsider their entire existence.',
-      'Laugh, but remember it for the next 14 business days.',
-      'Make an even better joke about them. Obviously.'
+      'Laugh along. I’m secure enough to take a joke. This is not a legally binding statement.',
+      'Give them a look so powerful they start reviewing their childhood decisions.',
+      'Laugh now. Remember forever. Casually bring it up when they least expect it.',
+      'Return fire immediately. I don’t start wars, but I do have excellent ammunition.'
     ]
   },
   {
-    question: 'Your friend asks you to help them move house on your only free weekend.',
+    question: 'Your friend is moving house and asks for help.',
     answers: [
-      "Of course. I'll bring snacks and help them unpack too.",
-      'Depends. Did they ask nicely, and do they understand that my time is valuable?',
-      'Absolutely. But I am choosing the music and controlling the entire operation.',
-      "I'll help, but I'm already mentally calculating how long this is going to take."
+      'Bring snacks, help unpack and check everyone is okay. I’m a removal service with emotional intelligence.',
+      'What’s the floor? Is there a lift? How many boxes? Why are we not hiring professionals?',
+      'Take control of the music, organise everyone and somehow become the unpaid operations manager.',
+      'Ask how long it’ll take. I need to know whether to bring lunch, dinner or a change of identity.'
     ]
   },
   {
-    question: 'You’re at a party and someone asks, “So, what do you do?”',
+    question: 'Someone at a party asks, "So, what do you do?"',
     answers: [
-      'Tell them about my work, my side projects and the three hobbies I’m currently obsessed with.',
-      "Give a simple answer. I don't need to turn my existence into a TED Talk.",
-      'Somehow turn the conversation into a discussion about my latest achievement.',
-      'Ask them about themselves. People are generally more interesting when they talk.'
+      'Explain my job, side projects, hobbies and three things I’m currently learning. They asked an innocent question. Rookie mistake.',
+      'Give a short answer. I’m not conducting a performance review over cocktails.',
+      'Mention my achievements. I didn’t go through all that character development for nothing.',
+      'Turn the question around. I can get a stranger to reveal their entire life story before the starters arrive.'
     ]
   },
   {
-    question: 'You find an old photograph of someone you haven’t seen in years.',
+    question: 'You find an old photo of yourself from five years ago.',
     answers: [
-      'I remember exactly how that period felt. I miss those days.',
-      'I wonder what they’re doing now and whether we could reconnect.',
-      'I look at it, smile and move on. The past is the past.',
-      'I start wondering why I still feel something about it. Great, another emotional investigation.'
+      'Suddenly miss a version of my life I didn’t even know I would miss. Rude.',
+      'Investigate everyone in the photo. Where are they now? Are they married? Did they ever sort their lives out?',
+      'Nice photo. Good hair. Anyway, moving on.',
+      'Why am I emotional? What was happening in my life then? Why am I suddenly analysing a photo like it’s evidence in a criminal investigation?'
     ]
   },
   {
-    question: 'Someone you love is upset but refuses to explain why.',
+    question: 'Someone you love is upset but refuses to tell you what’s wrong.',
     answers: [
-      "Give them space, but make sure they know I'm there.",
-      'Ask directly. I cannot work with mysterious emotional puzzles.',
-      'Start imagining all the possible reasons. Did I do something? Are they okay?',
-      'Try to cheer them up with food, affection and questionable jokes.'
+      'Give them space, but stay close. I’ll be here when they’re ready. No interrogation required.',
+      'I cannot fix a problem that has not been disclosed. Please provide the incident report.',
+      'Reconstruct every conversation we’ve had since 2018. Surely there’s a clue. It’s probably me. It might not be me. It’s definitely me.',
+      'Deploy food, hugs and increasingly stupid memes. I will not rest until the smile returns.'
     ]
   },
   {
-    question: 'Which situation would hurt you the most?',
+    question: 'Which feeling gets under your skin the most?',
     answers: [
-      'Someone making you feel like you’re easy to replace.',
-      'Someone repeatedly misunderstanding your intentions.',
-      'Someone being emotionally inconsistent after making promises.',
-      'Someone treating your kindness as an unlimited subscription.'
+      'Being replaceable. I don’t need to be everyone’s favourite, but I don’t want to feel like an optional subscription.',
+      'Not being good enough. My inner critic has a full-time position and apparently unlimited annual leave.',
+      'Being misunderstood. I could explain myself in five languages and someone would still miss the point.',
+      'Feeling powerless. I can handle a disaster. I cannot handle being told there’s nothing I can do.'
     ]
   },
   {
-    question: 'You get rejected from something you really wanted.',
+    question: 'Your ideal weekend looks like...',
     answers: [
-      "I'll be disappointed, but I'll work harder and come back better.",
-      'I take it personally. I need to know exactly why.',
-      'I immediately start considering a completely different direction.',
-      'I act unbothered. Privately, I may be having a small emotional earthquake.'
+      'Somewhere I’ve never been, with a questionable itinerary and an aggressively full camera roll.',
+      'A clean apartment, completed errands and the smug satisfaction of having my life together for approximately 36 hours.',
+      'Good food, favourite people and no obligation to put on real trousers.',
+      'Trying something new. I don’t need to be good at it. I just need a story and possibly a minor injury.'
     ]
   },
   {
-    question: 'You suddenly become very interested in something new. What’s your approach?',
+    question: 'Someone takes ages to reply to your message.',
     answers: [
-      'Research it thoroughly, buy the equipment and create a routine.',
-      'Buy everything immediately. I have no intention of being underprepared for my new obsession.',
-      "Try it, get bored, discover something else and repeat. It's called range.",
-      'Find the most beautiful version of it. If I’m doing this, it needs to look good.'
+      'They’re probably busy. I have a life too. Anyway, let me check if my other 14 notifications are important.',
+      'They used to reply in 12 minutes. Now it’s four hours. I have opened an investigation and reviewed the evidence.',
+      'Send another message. I’m not competing in the Nonchalant World Championships.',
+      'Forget I sent it. Their reply arrives three days later and I’m genuinely surprised to hear from them.'
     ]
   },
   {
-    question: 'What would make you feel most successful in life?',
+    question: 'What motivates you most?',
     answers: [
-      "Being exceptionally good at something I've worked hard to master.",
-      "Being recognised and admired for what I've achieved.",
-      'Having freedom, exciting experiences and stories worth telling.',
-      'Having a peaceful life, meaningful relationships and enough money to enjoy it.'
+      'New experiences. I want memories, not just a calendar full of meetings and dentist appointments.',
+      'Achievement. I want results, recognition and proof that all this effort wasn’t just an elaborate character-building exercise.',
+      'Connection. What’s the point of having everything if you have nobody to share it with?',
+      'Freedom. I refuse to spend my one life following someone else’s instruction manual.'
     ]
   },
   {
-    question: 'You have to choose one lifestyle permanently.',
+    question: 'What’s your biggest weakness?',
     answers: [
-      'A structured routine, ambitious goals and measurable progress.',
-      'A life full of travel, surprises and spontaneous decisions.',
-      'Beautiful surroundings, good food and a carefully curated lifestyle.',
-      'A simple life with minimal responsibilities and maximum peace.'
+      'Acting first and discovering the consequences later. Apparently, "it’ll be fine" is not a risk assessment.',
+      'Overthinking until the opportunity expires. At least I considered every possible outcome.',
+      'Caring too much. One sad message and suddenly my entire day has a new storyline.',
+      'Getting bored the second things become predictable. My attention span has the commitment level of a situationship.'
     ]
   },
   {
-    question: 'Your friends describe your spending habits as…',
+    question: 'You realise you’ve made a mistake. What happens next?',
     answers: [
-      'Strategic. I know where my money goes.',
-      'Emotionally motivated. Sometimes retail therapy is cheaper than therapy.',
-      "Selective. I don't mind spending more if the quality is worth it.",
-      'Reckless. But I prefer the word adventurous.'
+      'Own it, fix it and move on. I don’t have the budget for a three-season psychological drama.',
+      'Replay the entire incident 87 times, then imagine 12 better responses I could have given.',
+      'Make a joke about it before anyone else does. If I’m laughing, we’re all laughing.',
+      'Learn from it. I may be a disaster, but I am a well-documented disaster.'
     ]
   },
   {
-    question: 'You’ve had an embarrassing public moment. What happens afterwards?',
+    question: 'What compliment secretly means the most to you?',
     answers: [
-      'I replay it repeatedly and wonder whether everyone remembers.',
-      'I laugh about it. If anything, it makes a great story.',
-      'I pretend it never happened. New identity, who dis?',
-      'I get annoyed because people probably misunderstood what I was trying to do.'
+      'People feel safe being themselves around you.',
+      'When you say you’ll do something, I know I can count on you.',
+      'There’s something about you that people don’t forget.',
+      'You notice things everyone else completely misses.'
     ]
   },
   {
-    question: 'When life gets overwhelming, your instinct is to…',
+    question: 'You get the opportunity to move to another country.',
     answers: [
-      'Organise everything. If I can control my environment, I can control my life.',
-      'Disappear for a while. Please respect the witness protection programme.',
-      'Find someone to talk to. I need to get all these feelings out.',
-      'Start something completely new. A fresh chapter will definitely solve everything.'
+      'New country, new chapter, new personality. Please allow 3–5 working days for reinvention.',
+      'Research everything. I want to know the tax system before I know what the local coffee tastes like.',
+      'Get excited, then remember everyone I’m leaving behind. Why does every good decision come with emotional damage?',
+      'Buy the ticket first. Let future me deal with the administrative consequences.'
     ]
   },
   {
-    question: 'What’s something people often get wrong about you?',
+    question: 'How do you feel about rules?',
     answers: [
-      "They think I'm cold, but I'm actually much more sensitive than I let on.",
-      "They think I'm quiet, but I'm constantly observing everything.",
-      'They think I’m confident, but I sometimes need reassurance too.',
-      'They think I’m chaotic, but I know exactly what I’m doing. Mostly.'
+      'I respect rules. I just need to understand why someone made them before I agree to participate.',
+      'Rules create structure. Chaos is just poor management wearing a fun outfit.',
+      'I follow rules until they become inconvenient. I’m cooperative, not a hostage.',
+      'If nobody can explain why the rule exists, I’m treating it as a suggestion.'
     ]
   },
   {
-    question: 'If you could eliminate one recurring problem from your life, what would it be?',
+    question: 'Which sentence sounds most like you?',
     answers: [
-      'Getting emotionally attached to people and situations that don’t deserve it.',
-      'My brain treating every minor event like an international investigation.',
-      'My inability to stick to one plan, hobby or personal identity.',
-      'Having to deal with people who lack common sense, standards or basic consideration.'
+      'I have the emotional stability of a Victorian widow, but you’ll never catch me admitting it.',
+      'I’ve planned my entire life. Unfortunately, life has not received the memo.',
+      'My life is 30% good decisions, 70% stories I cannot tell my mother.',
+      'I don’t have a five-year plan. I barely have a five-minute plan. But somehow, we’re here.'
     ]
   }
 ]
 
+
+const sushiPlates = [
+  {
+    id: 'salmon-nigiri',
+    name: 'Salmon Nigiri',
+    title: 'The Hopeless Romantic',
+    description: 'Falls in love with potential. And sometimes the potential is imaginary.',
+    image: '/characters/pixel-sushi/salmon-nigiri.png'
+  },
+  {
+    id: 'spicy-tuna',
+    name: 'Spicy Tuna',
+    title: 'The Chaos Agent',
+    description: 'Makes questionable decisions with impressive confidence.',
+    image: '/characters/pixel-sushi/spicy-tuna.png'
+  },
+  {
+    id: 'avocado-maki',
+    name: 'Avocado Maki',
+    title: 'The Overthinker',
+    description: 'Has already analysed 17 possible meanings of your last message.',
+    image: '/characters/pixel-sushi/avocado-maki.png'
+  },
+  {
+    id: 'shrimp-tempura',
+    name: 'Shrimp Tempura',
+    title: 'The Crispy Softie',
+    description: 'Acts unbothered. Is, in fact, bothered.',
+    image: '/characters/pixel-sushi/shrimp-tempura.png'
+  },
+  {
+    id: 'tamago',
+    name: 'Tamago',
+    title: 'The Comfort Person',
+    description: 'The dependable one everyone secretly needs.',
+    image: '/characters/pixel-sushi/tamago-nigiri.png'
+  },
+  {
+    id: 'unagi',
+    name: 'Unagi',
+    title: 'The Quiet Achiever',
+    description: 'Does the work. Gets the results. Skips the announcement.',
+    image: '/characters/pixel-sushi/unagi.png'
+  }
+]
+
+
+
+
+
+
 function App() {
   const [started, setStarted] = useState(false)
+  const [showSocialClub, setShowSocialClub] = useState(false)
   const [currentQuestion, setCurrentQuestion] = useState(0)
-  const [answers, setAnswers] = useState([])
-  const [finished, setFinished] = useState(false)
-  const [result, setResult] = useState(null)
+  const [answers, setAnswers] = useState({})
+  const [result, setResult] = useState(() => {
+  const savedResult = localStorage.getItem('sushi_mate_result')
+  return savedResult ? JSON.parse(savedResult) : null
+})
+  const [selectedPlate, setSelectedPlate] = useState(null)
 
-  function chooseAnswer(answerIndex) {
-    const updatedAnswers = [...answers]
 
-    updatedAnswers[currentQuestion] = {
-      questionIndex: currentQuestion,
-      answerIndex,
-      answer: questions[currentQuestion].answers[answerIndex]
-    }
+  const nextQuestion = async () => {
+  if (currentQuestion < questions.length - 1) {
+    setCurrentQuestion(currentQuestion + 1)
+  } else {
+    const finalResult = calculateResult(answers)
+    setResult(finalResult)
+    localStorage.setItem('sushi_mate_result', JSON.stringify(finalResult))
 
-    setAnswers(updatedAnswers)
-  }
+    const { error } = await supabase
+      .from('quiz_results')
+      .insert({ personality_id: finalResult.id })
 
-  function nextQuestion() {
-    if (!answers[currentQuestion]) return
-
-    if (currentQuestion < questions.length - 1) {
-      setCurrentQuestion(currentQuestion + 1)
-    } else {
-      const calculatedResult = calculateResult(answers)
-      setResult(calculatedResult)
-      setFinished(true)
+    if (error) {
+      console.error('Could not save quiz result:', error)
     }
   }
+}
 
-  function restartQuiz() {
+
+  const restartQuiz = () => {
     setStarted(false)
     setCurrentQuestion(0)
-    setAnswers([])
-    setFinished(false)
+    setAnswers({})
     setResult(null)
+    setSelectedPlate(null)
   }
 
+const chooseAnswer = (answerIndex) => {
+  setAnswers({
+    ...answers,
+    [currentQuestion]: {
+      answerIndex: answerIndex
+    }
+  })
+}
+
   return (
-    <main className={`landing-page ${started ? 'quiz-mode' : ''}`}>
-      {!started && (
-        <div className="floating-sushi" aria-hidden="true">
-          {sushi.map((item, index) => (
-            <span key={index} className={`sushi sushi-${index + 1}`}>
-              {item}
-            </span>
-          ))}
-        </div>
-      )}
+    <main className="app-shell">
+      
+<header className="top-bar">
+  <div className="brand-mark">🍣 SUSHI MATE</div>
 
-      <nav className="navbar">
-        <div className="brand">🍣 THE SUSHI TEST</div>
-        <span className="edition">PERSONALITY CLASSIFIER v1.0</span>
-      </nav>
+  <div className="top-bar-actions">
+   <button
+  className="social-club-nav"
+  type="button"
+  onClick={() => setShowSocialClub(true)}
+>
+  <span className="lantern-icon">🏮</span>
+  <span className="lantern-label">SOCIAL CLUB</span>
+</button>
 
-      {!started ? (
-        <section className="hero">
-          <div className="eyebrow">
-            <span className="status-dot"></span>
-            22 PERSONALITIES · 9 REAL · 13 IMPOSTORS
+    <span className="version-label">
+      PERSONALITY CLASSIFIER V1.0
+    </span>
+  </div>
+</header>
+
+
+
+
+
+
+
+
+
+
+
+
+{showSocialClub && (
+  <section className="social-club-screen">
+    <div className="social-club-header">
+      <button
+        className="social-club-back"
+        type="button"
+        onClick={() => setShowSocialClub(false)}
+      >
+        ← BACK TO HOME
+      </button>
+    </div>
+
+
+
+    <CommunityStats />
+
+    <SushiConfessions
+      personalityId={result?.id || null}
+    />
+  </section>
+)}
+
+      {!started && !result && !showSocialClub && (
+        <section className="landing-screen">
+          <div className="hero-copy">
+            <div className="japanese-kicker">— スシメイト —</div>
+
+            <div className="personality-count">
+              <span className="status-dot" />
+              22 PERSONALITIES · 9 REAL · 13 IMPOSTORS
+            </div>
+
+            <div className="hero-logo-wrap">
+              <img
+                src="/backgrounds/sushi-mate-logo.png"
+                alt="SUSHI MATE"
+                className="hero-logo-img"
+              />
+            </div>
+
+            <div className="quiz-label">
+              <span className="quiz-decoration">⌒⌒</span>
+              PERSONALITY QUIZ
+              <span className="quiz-decoration">⌒⌒</span>
+            </div>
+
+            <h2>Which sushi are you?</h2>
+            <p>
+              A 20-question personality quiz to find your
+              <br />
+              Sushi soulmate, best match and worst match.
+            </p>
           </div>
 
-          <h1>
-            THINK YOU'RE
-            <span className="sushi-word"> SUSHI?</span>
-            <br />
-            <span className="prove-word">PROVE IT.</span>
-          </h1>
 
-          <p className="intro">
-            Answer a few questionable questions.
-            Discover your true food identity.
-            Prepare to be exposed.
-          </p>
 
-          <button
-            className="start-button"
-            type="button"
-            onClick={() => setStarted(true)}
-          >
-            TAKE THE TEST <span>→</span>
-          </button>
 
-          <p className="disclaimer">
-            NO PRESSURE. YOUR RESULT MIGHT BE EMBARRASSING.
-          </p>
-        </section>
-      ) : (
-        <section className="quiz-panel">
-          {!finished ? (
-            <>
-              <div className="quiz-topline">
-                <span>THE SUSHI TEST</span>
-                <span>
-                  {currentQuestion + 1} / {questions.length}
-                </span>
-              </div>
 
-              <div className="progress-track">
-                <div
-                  className="progress-fill"
+
+
+          <div className="sushi-restaurant">
+            <div className="sakura-layer" aria-hidden="true">
+              {Array.from({ length: 14 }, (_, index) => (
+                <span
+                  className="sakura-petal"
+                  key={index}
                   style={{
-                    width: `${((currentQuestion + 1) / questions.length) * 100}%`
+                    '--petal-left': `${(index * 37 + 5) % 100}%`,
+                    '--petal-delay': `${(index % 7) * -2.1}s`,
+                    '--petal-duration': `${12 + (index % 5) * 2}s`,
+                    '--petal-size': `${9 + (index % 4) * 3}px`
                   }}
                 />
-              </div>
+              ))}
+            </div>
 
-              <p className="question-number">
-                QUESTION {String(currentQuestion + 1).padStart(2, '0')}
-              </p>
+            <div className="conveyor-belt">
+              <svg
+                className="conveyor-svg"
+                viewBox="0 0 1050 390"
+                role="group"
+                aria-label="Moving U-shaped sushi conveyor. Select a plate to preview its personality."
+              >
+                <defs>
+                  <path
+                    id="sushi-conveyor-loop"
+                    d="M 155 326 C 115 305 92 278 92 235 V 150 C 92 76 160 42 250 42 H 800 C 890 42 958 76 958 150 V 235 C 958 278 935 305 895 326"
+                  />
 
-              <h2>{questions[currentQuestion].question}</h2>
+                  <path
+                    id="conveyor-deck-shape"
+                    d="M 150 350 C 85 322 48 286 48 230 V 145 C 48 57 125 18 245 18 H 805 C 925 18 1002 57 1002 145 V 230 C 1002 286 965 322 900 350 L 900 270 C 947 248 958 225 958 195 V 150 C 958 96 895 66 805 66 H 245 C 155 66 92 96 92 150 V 195 C 92 225 103 248 150 270 Z"
+                  />
 
-              <div className="answer-list">
-                {questions[currentQuestion].answers.map((answer, index) => (
-                  <button
-                    key={index}
-                    type="button"
-                    className={`answer-option ${
-                      answers[currentQuestion]?.answerIndex === index
-                        ? 'selected'
-                        : ''
-                    }`}
-                    onClick={() => chooseAnswer(index)}
+                  <linearGradient
+                    id="conveyor-deck-gradient"
+                    x1="0"
+                    y1="0"
+                    x2="0"
+                    y2="1"
                   >
-                    <span className="answer-letter">
-                      {String.fromCharCode(65 + index)}
-                    </span>
-                    {answer}
-                  </button>
+                    <stop offset="0%" stopColor="#76264f" />
+                    <stop offset="50%" stopColor="#4b1940" />
+                    <stop offset="100%" stopColor="#29102f" />
+                  </linearGradient>
+                </defs>
+
+                <use
+                  href="#conveyor-deck-shape"
+                  className="conveyor-structure-shadow"
+                  transform="translate(0 22)"
+                />
+                <use
+                  href="#conveyor-deck-shape"
+                  className="conveyor-sidewall"
+                  transform="translate(0 17)"
+                />
+                <use
+                  href="#conveyor-deck-shape"
+                  className="conveyor-deck"
+                />
+
+                <g className="conveyor-panel-seams">
+                  <path d="M 180 25 V 66 M 300 20 V 66 M 430 20 V 66 M 560 20 V 66 M 690 20 V 66 M 820 25 V 66" />
+                </g>
+
+                <use
+                  href="#conveyor-deck-shape"
+                  className="conveyor-edge-glow"
+                />
+                <use
+                  href="#conveyor-deck-shape"
+                  className="conveyor-edge-light"
+                />
+                <use
+                  href="#sushi-conveyor-loop"
+                  className="conveyor-motion"
+                />
+
+                <path
+                  className="conveyor-arrow"
+                  d="M 115 220 l 15 12 -15 12 M 935 220 l -15 12 15 12"
+                />
+
+                {sushiPlates.map((plate, index) => (
+                  <g className="conveyor-moving-plate" key={plate.id}>
+                    <animateMotion
+                      dur="36s"
+                      begin={`${index * -6}s`}
+                      repeatCount="indefinite"
+                      rotate="0"
+                    >
+                      <mpath href="#sushi-conveyor-loop" />
+                    </animateMotion>
+
+                    <foreignObject
+                      x="-130"
+                      y="-125"
+                      width="260"
+                      height="240"
+                      overflow="visible"
+                    >
+                      <div
+                        xmlns="http://www.w3.org/1999/xhtml"
+                        style={{
+                          width: '100%',
+                          height: '100%',
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          overflow: 'visible'
+                        }}
+                      >
+                        <button
+                          className={`sushi-plate ${
+                            selectedPlate?.id === plate.id ? 'is-selected' : ''
+                          }`}
+                          type="button"
+                          onClick={() =>
+                            setSelectedPlate(
+                              selectedPlate?.id === plate.id ? null : plate
+                            )
+                          }
+                          aria-label={`Select ${plate.name}`}
+                          aria-pressed={selectedPlate?.id === plate.id}
+                        >
+                          <img
+                            className="pixel-sushi-image"
+                            src={plate.image}
+                            alt={plate.name}
+                            draggable="false"
+                          />
+
+                          <span className="plate-preview">
+                            <strong>{plate.name}</strong>
+                            <span>{plate.title}</span>
+                          </span>
+                        </button>
+                      </div>
+                    </foreignObject>
+                  </g>
                 ))}
-              </div>
+              </svg>
+            </div>
 
-              <div className="quiz-actions">
-                <button
-                  className="back-button"
-                  type="button"
-                  onClick={() => {
-                    if (currentQuestion === 0) {
-                      setStarted(false)
-                    } else {
-                      setCurrentQuestion(currentQuestion - 1)
-                    }
-                  }}
-                >
-                  ← BACK
-                </button>
+            <button
+              className="restaurant-start-button"
+              type="button"
+              onClick={() => {
+                setSelectedPlate(null)
+                setStarted(true)
+              }}
+            >
+              TAKE THE TEST <span>→</span>
+            </button>
 
+
+
+
+
+
+
+
+{localStorage.getItem('sushi_mate_result') && (
+  <button
+    className="restaurant-start-button"
+    type="button"
+    onClick={() => {
+      setResult(JSON.parse(localStorage.getItem('sushi_mate_result')))
+    }}
+  >
+    RETURN TO MY SUSHI <span>→</span>
+  </button>
+)}
+
+
+
+
+
+            {selectedPlate && (
+              <div className="selected-preview">
+                <strong>{selectedPlate.name}</strong>
+                <span>{selectedPlate.title}</span>
+                <p>{selectedPlate.description}</p>
                 <button
-                  className="start-button"
                   type="button"
-                  disabled={!answers[currentQuestion]}
-                  onClick={nextQuestion}
+                  onClick={() => setSelectedPlate(null)}
                 >
-                  {currentQuestion === questions.length - 1
-                    ? 'FINISH TEST'
-                    : 'NEXT QUESTION →'}
+                  CLEAR SELECTION ×
                 </button>
               </div>
-            </>
-          ) : (
-            result && (
-              <ResultCard
-                result={result}
-                onPlayAgain={restartQuiz}
+            )}
+
+            <div className="sushi-diner">
+              <div className="diner-glow" />
+              <div className="diner-seat">YOUR SEAT</div>
+            </div>
+
+            <div
+              className="dining-table"
+              aria-label="Pixel-art sushi tableware"
+            >
+              <img
+                className="pixel-tableware"
+                src="/backgrounds/pixel-tableware.png"
+                alt="Matcha cup, soy sauce bottle, chopsticks and dipping bowl"
               />
-            )
-          )}
+              <span className="chopstick-rest" aria-hidden="true" />
+            </div>
+          </div>
+
+          <p className="disclaimer">
+            No worries. Your sushi won't judge you. Much.
+          </p>
         </section>
       )}
 
+      {started && !result && (
+        <section className="quiz-screen">
+          <div className="quiz-progress">
+            <span>
+              QUESTION {currentQuestion + 1} / {questions.length}
+            </span>
+
+            <div className="progress-track">
+              <div
+                className="progress-fill"
+                style={{
+                  width: `${((currentQuestion + 1) / questions.length) * 100}%`
+                }}
+              />
+            </div>
+          </div>
+
+          <div className="question-card">
+            <span className="question-number">
+              QUESTION {String(currentQuestion + 1).padStart(2, '0')}
+            </span>
+
+            <h2>{questions[currentQuestion].question}</h2>
+
+            <div className="answer-list">
+              {questions[currentQuestion].answers.map((answer, index) => (
+                <button
+                  className={`answer-option ${
+                    answers[currentQuestion]?.answerIndex === index? 'selected' : ''
+                  }`}
+                  type="button"
+                  key={index}
+                  onClick={() => chooseAnswer(index)}
+                >
+                  <span className="answer-letter">
+                    {String.fromCharCode(65 + index)}
+                  </span>
+                  <span>{answer}</span>
+                </button>
+              ))}
+            </div>
+
+            <div className="quiz-navigation">
+              <button
+                className="back-button"
+                type="button"
+                onClick={() => {
+                  if (currentQuestion > 0) {
+                    setCurrentQuestion(currentQuestion - 1)
+                  } else {
+                    setStarted(false)
+                  }
+                }}
+              >
+                ← BACK
+              </button>
+
+              <button
+                className="start-button"
+                type="button"
+                disabled={answers[currentQuestion] === undefined}
+                onClick={nextQuestion}
+              >
+                {currentQuestion === questions.length - 1
+                  ? 'FINISH TEST'
+                  : 'NEXT QUESTION →'}
+              </button>
+            </div>
+          </div>
+        </section>
+      )}
+
+{result && (
+  <section className="result-screen">
+    <ResultCard
+      result={result}
+      onPlayAgain={restartQuiz}
+    />
+
+    <div className="result-sidebar">
+      <CommunityStats />
+
+      <SushiConfessions personalityId={result.id} />
+    </div>
+  </section>
+)}
+
       <footer>
-        <span>THE SUSHI TEST © 2026</span>
+        <span>SUSHI MATE © 2026</span>
         <span>IDENTITY IS A SPECTRUM. SUSHI IS NOT.</span>
       </footer>
     </main>

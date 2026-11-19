@@ -1,411 +1,3056 @@
+@import url('https://fonts.googleapis.com/css2?family=Knewave&family=Nunito:wght@400;600;700;800;900&display=swap');
 
-.landing-page {
-  min-height: 100vh;
-  padding: 28px 7%;
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
-  position: relative;
-  background:
-    linear-gradient(
-      rgba(7, 8, 28, 0.48),
-      rgba(7, 8, 28, 0.65)
-    ),
-    url('./images/japan-night.png') center / cover fixed;
-
-  color: white;
-  font-family: Arial, sans-serif;
+:root {
+  font-family: 'Nunito', sans-serif;
+  color: #fff0dc;
+  background: #080b2b;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  --pink: #ff4c9a;
+  --pink-light: #ffc2df;
+  --cream: #ffe8c9;
+  --purple: #a65cff;
 }
 
+* {
+  box-sizing: border-box;
+}
 
-.navbar {
+html,
+body,
+#root {
+  min-height: 100%;
+  margin: 0;
+}
+
+body {
+  min-width: 320px;
+  background: #080b2b;
+}
+
+button {
+  font: inherit;
+}
+
+.app-shell {
+  position: relative;
+  isolation: isolate;
+  min-height: 100vh;
+  overflow: hidden;
+  padding: 18px clamp(16px, 4vw, 58px) 14px;
+  background:
+    linear-gradient(180deg, rgba(7, 8, 37, 0.16), rgba(7, 8, 37, 0.38)),
+    url('/backgrounds/japanese-restaurant.png') center 42% / cover fixed no-repeat;
+  color: var(--cream);
+}
+
+.app-shell::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(
+    180deg,
+    rgba(6, 8, 38, 0.1),
+    rgba(6, 8, 38, 0.48)
+  );
+  pointer-events: none;
+}
+
+.top-bar {
+  position: relative;
+  z-index: 10;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  position: relative;
-  z-index: 2;
+  max-width: 1400px;
+  margin: 0 auto 12px;
+  padding: 0 3px;
+  color: #ffe8cf;
 }
 
-.brand {
+.brand-mark {
+  font-family: 'Knewave', Impact, sans-serif;
+  font-size: 17px;
+  letter-spacing: 1.5px;
+  text-shadow: 0 0 12px #ff4c9a;
+}
+
+.version-label {
+  font-size: 9px;
   font-weight: 900;
   letter-spacing: 2px;
-  color: #ff6b9d;
+  color: #e8c9e8;
 }
 
-.edition, .eyebrow, .disclaimer, footer {
-  font-size: 11px;
-  letter-spacing: 2px;
-  color: #a4a9c6;
-}
-
-.hero {
+.landing-screen {
   position: relative;
-  z-index: 2;
-  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: calc(100vh - 76px);
+  max-width: 1400px;
   margin: auto;
-  padding: 90px 0 65px;
 }
 
-.eyebrow {
-  display: inline-block;
-  border: 1px solid #343c67;
-  padding: 12px 18px;
-  border-radius: 30px;
+.hero-copy {
+  position: relative;
+  z-index: 8;
+  width: 100%;
+  text-align: center;
+  padding-top: clamp(2px, 1vh, 12px);
+}
+
+.japanese-kicker {
+  margin: 0 0 9px;
+  color: #ffbedb;
+  font-size: 12px;
+  letter-spacing: 5px;
+  text-shadow: 0 0 12px #ff4c9a;
+}
+
+.personality-count {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  padding: 7px 16px;
+  border: 1px solid rgba(255, 91, 164, 0.7);
+  background: rgba(6, 8, 36, 0.76);
+  color: #ffe8d2;
+  font-size: 9px;
+  font-weight: 900;
+  letter-spacing: 2px;
+  box-shadow: 0 0 14px rgba(255, 57, 139, 0.2);
 }
 
 .status-dot {
-  display: inline-block;
   width: 7px;
   height: 7px;
-  margin-right: 8px;
   border-radius: 50%;
-  background: #69f0cf;
-  box-shadow: 0 0 12px #69f0cf;
+  background: #ff559d;
+  box-shadow: 0 0 9px #ff559d;
 }
 
-h1 {
-  margin: 35px 0 20px;
-  font-size: clamp(48px, 9vw, 105px);
-  line-height: 0.98;
-  font-weight: 1000;
-  letter-spacing: -5px;
+.hero-logo-wrap {
+  position: relative;
+  isolation: isolate;
 }
 
-.sushi-word {
-  color: #ff6b9d;
-  text-shadow: 0 0 35px #ff398b55;
+.red-sun {
+  position: absolute;
+  z-index: 0;
+  pointer-events: none;
+  border-radius: 48% 52% 49% 51%;
+  background:
+    radial-gradient(ellipse at 48% 48%,
+      #ff304e 0 58%,
+      #f51d43 68%,
+      #dc153b 76%,
+      transparent 58%);
+  box-shadow: 0 0 12px rgba(255, 30, 65, 0.2);
+  transform: rotate(-9deg);
 }
 
-.prove-word {
-  color: #69e7ff;
-  text-shadow: 0 0 35px #35cfff55;
+.red-sun::before {
+  content: '';
+  position: absolute;
+  inset: -5px;
+  border: 3px solid #ed2546;
+  border-right-color: transparent;
+  border-radius: 47% 53% 44% 56%;
+  transform: rotate(15deg);
 }
 
-.intro {
-  max-width: 430px;
-  margin: 28px auto;
-  color: #b8bed7;
-  font-size: 17px;
-  line-height: 1.8;
+.red-sun::after {
+  content: '';
+  position: absolute;
+  inset: -9px;
+  border: 8px dashed rgba(255, 43, 71, 0.9);
+  border-left-color: transparent;
+  border-radius: 52% 48% 56% 44%;
+  transform: rotate(-18deg);
 }
 
-.start-button {
-  padding: 18px 36px;
-  border: none;
-  border-radius: 7px;
-  background: linear-gradient(100deg, #ff5797, #a66cff);
-  color: white;
-  font-size: 14px;
+.hero-logo {
+  position: relative;
+  z-index: 2;
+}
+
+.hero-logo {
+  position: relative;
+  margin: 0;
+  color: #ffe8c9;
+  font-family: 'Sedgwick Ave Display', 'Permanent Marker', cursive;
+  font-size: clamp(58px, 8.5vw, 112px);
+  font-weight: 400;
+  line-height: 1.18;
+  letter-spacing: -2px;
+  text-shadow:
+    3px 5px 0 rgba(38, 13, 30, 0.8),
+    0 0 18px rgba(255, 200, 165, 0.2);
+  white-space: nowrap;
+  transform: rotate(-1deg);
+}
+
+.quiz-label {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 22px;
+  width: min(380px, 80vw);
+  min-height: 39px;
+  margin: 1px auto 8px;
+  padding: 5px 15px;
+  border: 1.5px solid #ff3b79;
+  background: rgba(8, 8, 37, 0.88);
+  color: var(--cream);
+  font-size: 12px;
   font-weight: 900;
-  letter-spacing: 2px;
-  cursor: pointer;
-  box-shadow: 0 0 30px #ff579744;
+  letter-spacing: 4px;
+  box-shadow: 0 0 11px rgba(255, 40, 93, 0.35);
+  clip-path: polygon(
+    5% 0,
+    95% 0,
+    100% 50%,
+    95% 100%,
+    5% 100%,
+    0 50%
+  );
 }
 
-.start-button:hover {
-  transform: translateY(-4px);
+.quiz-decoration {
+  position: relative;
+  display: inline-block;
+  width: 62px;
+  height: 30px;
+  flex: 0 0 62px;
+  font-size: 0;
+  background:
+    radial-gradient(ellipse at 50% 100%,
+      transparent 0 8px,
+      #ff254f 8.5px 10px,
+      transparent 10.5px),
+    radial-gradient(ellipse at 50% 100%,
+      transparent 0 16px,
+      #ff254f 16.5px 18px,
+      transparent 18.5px),
+    radial-gradient(ellipse at 50% 100%,
+      transparent 0 24px,
+      #ff254f 24.5px 26px,
+      transparent 26.5px);
+  background-repeat: no-repeat;
+  filter: drop-shadow(0 0 4px #ff254f);
+}
+
+.hero-copy h2 {
+  margin: 8px 0 3px;
+  color: var(--cream);
+  font-size: clamp(21px, 2.5vw, 31px);
+  font-weight: 900;
+  font-style: italic;
+  text-shadow: 0 2px 10px #08051d;
+}
+
+.hero-copy p {
+  margin: 5px auto 12px;
+  color: #fff0db;
+  font-size: clamp(12px, 1.25vw, 16px);
+  font-weight: 700;
+  line-height: 1.4;
+  text-shadow: 0 2px 8px #09051c;
+}
+
+ {
+  position: relative;
+  isolation: isolate;
+  disp.start-buttonlay: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 25px;
+  min-width: 300px;
+  min-height: 60px;
+  padding: 14px 32px;
+  border: 0;
+  border-radius: 0;
+  background: #ff286b;
+  color: #ffe8c9;
+  font-size: clamp(14px, 1.5vw, 19px);
+  font-weight: 1000;
+  letter-spacing: 3px;
+  cursor: pointer;
+  clip-path: polygon(
+    7% 0,
+    93% 0,
+    100% 50%,
+    93% 100%,
+    7% 100%,
+    0 50%
+  );
+  box-shadow: 0 0 15px #ff286b, 0 0 35px rgba(255, 40, 107, 0.6);
+  transition: transform 0.2s, filter 0.2s;
+}
+
+./* REFERENCE-STYLE NEON BUTTON */
+.start-button {
+  position: relative !important;
+  isolation: isolate !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 20px !important;
+
+  width: 330px !important;
+  min-height: 64px !important;
+  padding: 12px 35px !important;
+
+  border: none !important;
+  border-radius: 0 !important;
+  background: #ff2867 !important;
+  color: #ffe8ca !important;
+
+  font-size: 21px !important;
+  font-weight: 900 !important;
+  letter-spacing: 3px !important;
+  white-space: nowrap !important;
+
+  clip-path: polygon(
+    8% 0, 92% 0, 100% 50%,
+    92% 100%, 8% 100%, 0 50%
+  );
+
+  filter:
+    drop-shadow(0 0 3px #ff2867)
+    drop-shadow(0 0 9px rgba(255, 40, 103, 0.9));
+  transition: filter .2s ease, transform .2s ease;
+}
+
+.start-button::before {
+  content: '' !important;
+  position: absolute !important;
+  z-index: -1 !important;
+  inset: 4px !important;
+  background: #1b0921 !important;
+  clip-path: polygon(
+    8% 0, 92% 0, 100% 50%,
+    92% 100%, 8% 100%, 0 50%
+  );
 }
 
 .start-button span {
-  margin-left: 18px;
+  color: #ff2867 !important;
+  font-size: 1.4em !important;
 }
 
-.disclaimer {
-  margin-top: 22px;
+.start-button:hover {
+  transform: translateY(-2px);
+  filter:
+    drop-shadow(0 0 5px #ff2867)
+    drop-shadow(0 0 15px rgba(255, 40, 103, 1));
 }
 
-footer {
-  position: relative;
-  z-index: 2;
-  display: flex;
-  justify-content: space-between;
-  gap: 15px;
-  border-top: 1px solid #292e4c;
-  padding-top: 22px;
-}
-
-.floating-sushi {
+.conveyor-belt,
+.conveyor-svg {
   position: absolute;
   inset: 0;
-  overflow: hidden;
-  pointer-events: none;
-  z-index: 1;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
 }
 
-.sushi {
+.conveyor-svg {
+  z-index: 3;
+}
+
+.conveyor-shadow {
+  fill: none;
+  stroke: rgba(0, 0, 0, 0.58);
+  stroke-width: 98;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  filter: blur(8px);
+}
+
+.conveyor-base {
+  fill: none;
+  stroke: rgba(28, 13, 55, 0.97);
+  stroke-width: 84;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  filter: drop-shadow(0 8px 8px rgba(0, 0, 0, 0.55));
+}
+
+.conveyor-rim {
+  fill: none;
+  stroke: #ff4b9c;
+  stroke-width: 6;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  filter:
+    drop-shadow(0 0 5px #ff4b9c)
+    drop-shadow(0 0 13px #ff398b);
+}
+
+.conveyor-motion {
+  fill: none;
+  stroke: #ffd1e8;
+  stroke-width: 4;
+  stroke-linecap: round;
+  stroke-dasharray: 3 20;
+  animation: conveyor-flow 1.2s linear infinite;
+  filter: drop-shadow(0 0 5px #ff7cbd);
+}
+
+.conveyor-arrow {
+  fill: none;
+  stroke: #ffb5dc;
+  stroke-width: 5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  filter: drop-shadow(0 0 6px #ff398b);
+}
+
+@keyframes conveyor-flow {
+  to {
+    stroke-dashoffset: -50;
+  }
+}
+
+.conveyor-moving-plate {
+  cursor: pointer;
+  overflow: visible;
+}
+
+.sushi-plate {
+  appearance: none;
+  -webkit-appearance: none;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: clamp(86px, 11vw, 142px);
+  min-height: clamp(62px, 7.5vw, 94px);
+  padding: 7px;
+  border: 3px solid #ff9bc9;
+  border-radius: 50%;
+  background: radial-gradient(
+    ellipse,
+    #fff8fb 0%,
+    #ffb6d6 62%,
+    #e84d9b 100%
+  );
+  box-shadow:
+    0 6px 0 #9b286c,
+    0 0 18px rgba(255, 105, 177, 0.7),
+    inset 0 0 14px rgba(255, 255, 255, 0.65);
+  cursor: pointer;
+  transition:
+    transform 0.2s,
+    box-shadow 0.2s,
+    border-color 0.2s;
+  overflow: visible;
+  outline: none;
+}
+
+.sushi-plate:hover,
+.sushi-plate:focus-visible {
+  z-index: 10;
+  transform: scale(1.08);
+  border-color: white;
+  box-shadow:
+    0 6px 0 #9b286c,
+    0 0 14px #fff,
+    0 0 30px #ff398b;
+  outline: none;
+}
+
+.sushi-plate.is-selected {
+  border-color: #fff;
+  box-shadow:
+    0 0 0 3px #a64dff,
+    0 0 20px #ff398b,
+    0 0 35px #a64dff;
+}
+
+.pixel-sushi-image {
+  display: block;
+  width: 78%;
+  height: 72px;
+  max-height: 76%;
+  object-fit: contain;
+  image-rendering: pixelated;
+  pointer-events: none;
+  user-select: none;
+  filter: drop-shadow(1px 2px 1px rgba(70, 20, 55, 0.3));
+}
+
+
+.plate-preview {
+  position: absolute;
+  left: 50%;
+  bottom: calc(100% + 16px);
+  transform: translateX(-50%) translateY(8px);
+
+  width: 160px;
+  box-sizing: border-box;
+  padding: 10px 12px;
+
+  border: 1px solid rgba(255, 145, 200, 0.85);
+  border-radius: 7px;
+  background: rgba(9, 8, 34, 0.98);
+
+  color: white;
+  text-align: center;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+
+  box-shadow:
+    0 0 12px rgba(255, 57, 139, 0.4),
+    0 0 24px rgba(255, 57, 139, 0.2);
+
+  transition: opacity 0.2s, transform 0.2s;
+  z-index: 50;
+}
+
+.plate-preview strong,
+.plate-preview span {
+  display: block;
+}
+
+.plate-preview strong {
+  font-size: 12px;
+  color: #ff9bc9;
+  letter-spacing: 0.7px;
+}
+
+.plate-preview span {
+  margin-top: 4px;
+  font-size: 10px;
+  color: #e7dff5;
+  line-height: 1.4;
+}
+
+.sushi-plate:hover .plate-preview,
+.sushi-plate:focus-visible .plate-preview {
+  opacity: 1;
+  visibility: visible;
+  transform: translateX(-50%) translateY(0);
+}
+
+
+.sushi-plate:hover .plate-preview,
+.sushi-plate:focus-visible .plate-preview {
+  opacity: 1;
+  visibility: visible;
+  transform: translateX(-50%) translateY(0);
+}
+
+.sushi-diner {
+  position: absolute;
+  z-index: 4;
+  left: 50%;
+  bottom: 8px;
+  transform: translateX(-50%);
+  width: 220px;
+  height: 83px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  pointer-events: none;
+}
+
+.diner-glow {
+  position: absolute;
+  bottom: 0;
+  width: 215px;
+  height: 72px;
+  border-radius: 50% 50% 12px 12px;
+  background: linear-gradient(
+    180deg,
+    rgba(130, 71, 172, 0.82),
+    rgba(28, 20, 70, 0.98)
+  );
+  border: 2px solid rgba(255, 118, 188, 0.85);
+  box-shadow:
+    0 0 15px #ff398b,
+    0 0 35px rgba(166, 77, 255, 0.65),
+    inset 0 0 20px rgba(255, 120, 190, 0.15);
+}
+
+.diner-seat {
+  position: relative;
+  z-index: 1;
+  margin-bottom: 22px;
+  padding: 7px 15px;
+  border: 1px solid rgba(255, 173, 220, 0.65);
+  border-radius: 20px;
+  background: rgba(12, 9, 42, 0.92);
+  color: #ffd6ec;
+  font-size: 10px;
+  font-weight: 900;
+  letter-spacing: 2px;
+  text-shadow: 0 0 8px #ff6b9d;
+}
+
+.selected-preview {
+  position: absolute;
+  z-index: 7;
+  left: 50%;
+  top: 48%;
+  transform: translate(-50%, -50%);
+  width: min(280px, 82%);
+  padding: 13px 17px;
+  border: 1px solid rgba(255, 145, 200, 0.8);
+  border-radius: 8px;
+  background: rgba(8, 7, 34, 0.97);
+  box-shadow:
+    0 0 20px rgba(255, 57, 139, 0.35),
+    0 0 35px rgba(166, 77, 255, 0.2);
+  text-align: center;
+}
+
+.selected-preview strong,
+.selected-preview span {
+  display: block;
+}
+
+.selected-preview strong {
+  color: #ff9bc9;
+  font-size: 16px;
+}
+
+.selected-preview span {
+  margin-top: 4px;
+  color: #d9baff;
+  font-size: 12px;
+}
+
+.selected-preview p {
+  margin: 8px 0;
+  color: #f2eaf7;
+  font-size: 12px;
+  line-height: 1.45;
+}
+
+.selected-preview button {
+  border: 0;
+  background: transparent;
+  color: #ff9bc9;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 1px;
+  cursor: pointer;
+}
+
+.dining-table {
+  position: absolute;
+  z-index: 5;
+  left: 50%;
+  bottom: -16px;
+  transform: translateX(-50%);
+  width: min(680px, 76%);
+  height: 82px;
+  border: 2px solid rgba(255, 146, 100, 0.8);
+  border-bottom: 0;
+  border-radius: 3% 3% 0 0 / 18% 18% 0 0;
+  background: linear-gradient(
+    180deg,
+    rgba(137, 55, 48, 0.96),
+    rgba(49, 19, 39, 0.99)
+  );
+  box-shadow:
+    0 -5px 20px rgba(255, 83, 128, 0.3),
+    inset 0 8px 15px rgba(255, 171, 120, 0.2);
+  pointer-events: none;
+}
+
+.dining-table::before {
+  content: '';
+  position: absolute;
+  left: 5%;
+  right: 5%;
+  top: 10px;
+  height: 2px;
+  background: rgba(255, 185, 135, 0.52);
+  box-shadow: 0 8px rgba(255, 185, 135, 0.13);
+}
+
+.tableware {
   position: absolute;
   display: block;
-  font-size: clamp(28px, 4vw, 55px);
-  filter: drop-shadow(0 0 12px #ff55c866);
-  animation: sushi-float 5s ease-in-out infinite;
 }
 
-.sushi-1 { top: 20%; left: 8%; }
-.sushi-2 { top: 38%; left: 19%; animation-delay: 1s; }
-.sushi-3 { top: 18%; right: 12%; animation-delay: 2s; }
-.sushi-4 { top: 53%; right: 18%; animation-delay: .5s; }
-.sushi-5 { bottom: 15%; left: 12%; animation-delay: 1.5s; }
-.sushi-6 { top: 30%; right: 7%; animation-delay: 2.5s; }
-.sushi-7 { bottom: 20%; right: 9%; animation-delay: 1s; }
-.sushi-8 { top: 65%; left: 25%; animation-delay: 3s; }
-.sushi-9 { top: 12%; left: 35%; animation-delay: 2s; }
-.sushi-10 { bottom: 12%; right: 35%; animation-delay: .5s; }
-.sushi-11 { top: 70%; right: 27%; animation-delay: 1.8s; }
+.soy-dish {
+  left: 10%;
+  top: 31px;
+  width: 48px;
+  height: 19px;
+  border: 3px solid #f5b5c9;
+  border-radius: 50%;
+  background: radial-gradient(
+    ellipse,
+    #21102d 0 42%,
+    #75405d 48%,
+    #f6c2d2 70%
+  );
+  box-shadow: 0 3px 5px #190b20;
+}
 
-@keyframes sushi-float {
-  0%, 100% {
-    transform: translateY(0) rotate(-12deg);
+.matcha-cup {
+  left: 27%;
+  top: 7px;
+  width: 55px;
+  height: 49px;
+  border: 3px solid #f5d5cb;
+  border-radius: 7px 7px 15px 15px;
+  background: linear-gradient(90deg, #f4c6d3, #fff0db 48%, #c88eaa);
+  box-shadow: 0 5px 8px rgba(0, 0, 0, 0.35);
+}
+
+.matcha-cup::before {
+  content: '';
+  position: absolute;
+  right: -13px;
+  top: 10px;
+  width: 15px;
+  height: 21px;
+  border: 4px solid #f2d0d9;
+  border-left: 0;
+  border-radius: 0 12px 12px 0;
+}
+
+.matcha-surface {
+  position: absolute;
+  left: 3px;
+  right: 3px;
+  top: 1px;
+  height: 8px;
+  border-radius: 50%;
+  background: #8eaa62;
+  border: 1px solid #d9dba2;
+}
+
+.matcha-steam {
+  position: absolute;
+  top: -23px;
+  width: 8px;
+  height: 19px;
+  border-left: 2px solid rgba(255, 228, 238, 0.72);
+  border-radius: 50%;
+  animation: steam-drift 3s ease-in-out infinite;
+}
+
+.steam-one {
+  left: 16px;
+}
+
+.steam-two {
+  left: 31px;
+  animation-delay: 1.2s;
+}
+
+@keyframes steam-drift {
+  0%,
+  100% {
+    opacity: 0;
+    transform: translateY(5px) rotate(8deg);
   }
+
+  40% {
+    opacity: 0.8;
+  }
+}
+
+.chopsticks {
+  left: 45%;
+  top: 27px;
+  width: 145px;
+  height: 20px;
+  transform: rotate(-3deg);
+}
+
+.chopsticks i {
+  position: absolute;
+  left: 0;
+  width: 140px;
+  height: 6px;
+  border-radius: 5px;
+  background: linear-gradient(90deg, #f4d09b, #9e573e);
+  box-shadow: 0 2px 2px #1c0d25;
+}
+
+.chopsticks i:first-child {
+  top: 1px;
+}
+
+.chopsticks i:last-child {
+  top: 11px;
+}
+
+.small-plate {
+  right: 11%;
+  top: 24px;
+  width: 48px;
+  height: 28px;
+  border: 4px solid #f7d7e4;
+  border-radius: 50%;
+  background: radial-gradient(
+    ellipse,
+    #f8f0e8 0 45%,
+    #e99abf 49%,
+    #fff0f5 70%
+  );
+  box-shadow: 0 3px 5px #190b20;
+}
+
+.small-plate span {
+  position: absolute;
+  left: 14px;
+  top: 6px;
+  width: 13px;
+  height: 7px;
+  border-radius: 50%;
+  background: #f0a54b;
+}
+
+.sakura-layer {
+  position: absolute;
+  inset: -5% -3% 0;
+  z-index: 6;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.sakura-petal {
+  position: absolute;
+  left: var(--petal-left);
+  top: -24px;
+  width: var(--petal-size);
+  height: calc(var(--petal-size) * 0.68);
+  border-radius: 100% 0 100% 0;
+  background: linear-gradient(135deg, #ffd2e7, #ff65ad 72%, #d83288);
+  opacity: 0;
+  filter: drop-shadow(0 0 4px rgba(255, 105, 177, 0.55));
+  animation: sakura-fall var(--petal-duration) linear var(--petal-delay) infinite;
+}
+
+@keyframes sakura-fall {
+  0% {
+    transform: translate3d(0, -25px, 0) rotate(0);
+    opacity: 0;
+  }
+
+  8% {
+    opacity: 0.9;
+  }
+
   50% {
-    transform: translateY(-22px) rotate(12deg);
+    transform: translate3d(45px, 220px, 0) rotate(190deg);
+    opacity: 0.8;
+  }
+
+  92% {
+    opacity: 0.55;
+  }
+
+  100% {
+    transform: translate3d(-25px, 520px, 0) rotate(390deg);
+    opacity: 0;
   }
 }
 
-@media (max-width: 650px) {
-  .landing-page { padding: 22px 5%; }
-  .edition { font-size: 8px; }
-  h1 { letter-spacing: -2px; }
-  .hero { padding: 75px 0; }
-  .sushi { font-size: 25px; opacity: .65; }
-  .sushi-2, .sushi-5, .sushi-8, .sushi-10 {
-    display: none;
-  }
-  footer {
-    flex-direction: column;
-    text-align: center;
-    font-size: 9px;
-  }
-}
-
-
-.quiz-panel {
+.landing-footnote {
   position: relative;
-  z-index: 2;
-  width: min(650px, 100%);
-  margin: auto;
-  padding: 45px 20px 60px;
+  z-index: 7;
+  margin: 0 auto 2px;
+  color: #f5ddec;
+  font-size: 9px;
+  font-weight: 900;
+  letter-spacing: 2px;
+  text-align: center;
+  text-shadow: 0 2px 8px #08051d;
 }
 
-.quiz-topline {
-  display: flex;
-  justify-content: space-between;
-  color: #aeb6d8;
-  font-size: 12px;
-  font-weight: bold;
+.quiz-screen {
+  position: relative;
+  z-index: 3;
+  width: min(100%, 760px);
+  margin: clamp(25px, 6vh, 65px) auto 40px;
+  padding: 30px 34px;
+  border: 1px solid rgba(255, 117, 185, 0.4);
+  border-radius: 12px;
+  background: rgba(8, 8, 34, 0.92);
+  box-shadow:
+    0 0 30px rgba(255, 57, 139, 0.14),
+    0 0 60px rgba(88, 56, 170, 0.2);
+  backdrop-filter: blur(12px);
+}
+
+.quiz-progress > span {
+  display: block;
+  color: #ff9bc9;
+  font-size: 11px;
+  font-weight: 900;
   letter-spacing: 2px;
 }
 
 .progress-track {
   width: 100%;
-  height: 6px;
-  margin: 18px 0 40px;
-  border-radius: 20px;
-  background: #252a48;
+  height: 5px;
+  margin: 14px 0 30px;
+  border-radius: 5px;
+  background: rgba(255, 255, 255, 0.12);
   overflow: hidden;
 }
 
 .progress-fill {
   height: 100%;
-  border-radius: 20px;
-  background: linear-gradient(90deg, #ff5797, #69e7ff);
-  transition: width .3s ease;
+  border-radius: inherit;
+  background: linear-gradient(90deg, #ff398b, #a64dff);
+  box-shadow: 0 0 12px #ff398b;
+  transition: width 0.3s;
+}
+
+.question-card h2 {
+  margin: 14px 0 24px;
+  color: #fff;
+  font-size: clamp(22px, 3vw, 32px);
+  line-height: 1.35;
 }
 
 .question-number {
-  color: #69e7ff;
-  font-size: 12px;
-  letter-spacing: 3px;
-  font-weight: bold;
-}
-
-.quiz-panel h2 {
-  color: white;
-  font-size: clamp(27px, 5vw, 40px);
-  line-height: 1.2;
-  margin: 15px 0 28px;
+  color: #ff83b9;
+  font-size: 11px;
+  font-weight: 900;
+  letter-spacing: 2px;
 }
 
 .answer-list {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 11px;
 }
 
 .answer-option {
   display: flex;
   align-items: center;
-  gap: 16px;
+  gap: 15px;
   width: 100%;
-  padding: 17px;
-  border: 1px solid #343c67;
-  border-radius: 9px;
-  background: #14182b;
-  color: #e5e8fa;
+  padding: 15px;
+  border: 1px solid rgba(186, 157, 221, 0.3);
+  border-radius: 7px;
+  background: rgba(255, 255, 255, 0.055);
+  color: #eee9f8;
   text-align: left;
+  font-size: 14px;
+  line-height: 1.5;
   cursor: pointer;
-  transition: .2s ease;
+  transition:
+    border-color 0.2s,
+    background 0.2s,
+    transform 0.2s;
 }
 
-.answer-option:hover,
+.answer-option:hover {
+  border-color: #ff79b6;
+  background: rgba(255, 57, 139, 0.1);
+  transform: translateX(3px);
+}
+
 .answer-option.selected {
   border-color: #ff6b9d;
-  background: #29203e;
-  transform: translateX(4px);
+  background: rgba(255, 57, 139, 0.17);
+  box-shadow: inset 3px 0 #ff6b9d;
 }
 
 .answer-letter {
+  flex-shrink: 0;
   display: grid;
   place-items: center;
-  flex-shrink: 0;
-  width: 30px;
-  height: 30px;
-  border-radius: 7px;
-  background: #292e4c;
-  color: #69e7ff;
-  font-weight: bold;
+  width: 28px;
+  height: 28px;
+  border: 1px solid rgba(255, 155, 201, 0.6);
+  border-radius: 5px;
+  color: #ff9bc9;
+  font-size: 12px;
+  font-weight: 900;
 }
 
 .answer-option.selected .answer-letter {
-  background: #ff5797;
+  background: #ff398b;
   color: white;
+  border-color: #ff398b;
 }
 
-.quiz-actions {
+.quiz-navigation {
   display: flex;
   justify-content: space-between;
   align-items: center;
   gap: 15px;
-  margin-top: 30px;
+  margin-top: 28px;
 }
 
 .back-button {
-  border: none;
+  padding: 13px 18px;
+  border: 1px solid rgba(255, 155, 201, 0.5);
+  border-radius: 5px;
   background: transparent;
-  color: #aeb6d8;
+  color: #ffd4e8;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 1px;
   cursor: pointer;
+}
+
+.back-button:hover {
+  background: rgba(255, 57, 139, 0.12);
+}
+
+.quiz-navigation .start-button {
+  min-width: 210px;
+  min-height: 48px;
+  font-size: 12px;
+  letter-spacing: 1.5px;
+}
+
+
+
+
+
+
+
+
+.result-screen {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  align-items: start;
+  gap: 24px;
+  width: min(1200px, 96%);
+  margin: 35px auto;
+}
+
+.result-sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  min-width: 0;
+  padding-top: 150px;
+}
+
+@media (max-width: 760px) {
+  .result-sidebar {
+    padding-top: 0;
+  }
+}
+
+
+
+
+
+
+
+/* FOOTER */
+
+
+
+
+footer {
+  position: relative;
+  z-index: 8;
+  display: flex;
+  justify-content: space-between;
+  gap: 15px;
+  max-width: 1400px;
+  margin: 12px auto 0;
+  padding: 12px 0 2px;
+  color: rgba(221, 213, 239, 0.82);
+  font-size: 9px;
   letter-spacing: 1px;
 }
 
-.start-button:disabled {
-  opacity: .4;
-  cursor: not-allowed;
+@media (max-width: 900px) {
+  .app-shell {
+    padding: 14px 4% 10px;
+    background-attachment: scroll;
+  }
+
+  .landing-screen {
+    min-height: calc(100vh - 62px);
+  }
+
+  .hero-logo {
+    font-size: clamp(52px, 10vw, 82px);
+  }
+
+  .hero-copy p {
+    margin-bottom: 9px;
+  }
+
+  .start-button {
+    min-width: 240px;
+    min-height: 48px;
+  }
+
+  .sushi-restaurant {
+    height: clamp(245px, 38vh, 340px);
+  }
+
+  .sushi-diner {
+    bottom: 5px;
+    transform: translateX(-50%) scale(0.82);
+    transform-origin: bottom center;
+  }
+
+  .dining-table {
+    width: 88%;
+  }
+}
+
+@media (max-width: 560px) {
+  .top-bar {
+    align-items: flex-start;
+  }
+
+  .brand-mark {
+    font-size: 13px;
+  }
+
+  .version-label {
+    max-width: 130px;
+    text-align: right;
+    font-size: 7px;
+    letter-spacing: 1px;
+  }
+
+  .landing-screen {
+    min-height: calc(100vh - 60px);
+  }
+
+  .japanese-kicker {
+    font-size: 10px;
+  }
+
+  .personality-count {
+    padding: 6px 9px;
+    font-size: 7px;
+    letter-spacing: 1px;
+  }
+
+  .hero-logo {
+    font-size: clamp(40px, 11.5vw, 60px);
+    letter-spacing: 0;
+  }
+
+  .red-sun {
+    width: 94px;
+  }
+
+  .quiz-label {
+    min-height: 34px;
+    margin-bottom: 5px;
+    font-size: 9px;
+    letter-spacing: 2px;
+  }
+
+  .hero-copy h2 {
+    font-size: 21px;
+  }
+
+  .hero-copy p {
+    font-size: 11px;
+  }
+
+  .start-button {
+    min-width: 205px;
+    min-height: 44px;
+    padding: 9px 18px;
+    font-size: 12px;
+    letter-spacing: 1.5px;
+  }
+
+  .sushi-restaurant {
+    height: 280px;
+    margin-top: 8px;
+  }
+
+  .sushi-plate {
+    width: 76px;
+    min-height: 56px;
+    padding: 4px;
+    border-width: 2px;
+  }
+
+  .pixel-sushi-image {
+    height: 43px;
+  }
+
+  .dining-table {
+    width: 100%;
+    height: 62px;
+    bottom: -10px;
+  }
+
+  .chopsticks {
+    left: 44%;
+    top: 21px;
+    width: 80px;
+  }
+
+  .chopsticks i {
+    width: 78px;
+    height: 4px;
+  }
+
+  .sushi-diner {
+    bottom: 0;
+    transform: translateX(-50%) scale(0.68);
+  }
+
+  .selected-preview {
+    width: min(245px, 84%);
+    padding: 10px 12px;
+    top: 48%;
+  }
+
+  .selected-preview strong {
+    font-size: 13px;
+  }
+
+  .selected-preview p {
+    font-size: 10px;
+    margin: 6px 0;
+  }
+
+  .landing-footnote {
+    font-size: 7px;
+    letter-spacing: 1px;
+  }
+
+  .quiz-screen {
+    margin: 25px auto;
+    padding: 21px 16px;
+  }
+
+  .question-card h2 {
+    font-size: 21px;
+  }
+
+  .answer-option {
+    padding: 12px;
+    font-size: 12px;
+  }
+
+  footer {
+    font-size: 7px;
+    letter-spacing: 0.5px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+
+
+
+
+
+
+
+
+/* Hide the small hover label while the selected personality card is open */
+.sushi-restaurant:has(.selected-preview) .plate-preview {
+  opacity: 0 !important;
+  visibility: hidden !important;
+}
+
+/* Fix sushi hover label clipping */
+.conveyor-svg {
+  overflow: visible;
+}
+
+.conveyor-moving-plate {
+  overflow: visible;
+}
+
+.sushi-plate {
+  overflow: visible;
+}
+
+.plate-preview {
+  z-index: 50;
+  bottom: auto;
+  top: calc(100% + 12px);
+  transform: translateX(-50%) translateY(-5px);
+}
+
+.sushi-plate:hover .plate-preview,
+.sushi-plate:focus-visible .plate-preview {
+  transform: translateX(-50%) translateY(0);
+}
+
+/* =========================================
+   SUSHI MATE — JAPANESE BRUSH STYLE PATCH
+   ========================================= */
+
+/* 1. Main brush lettering */
+.hero-logo {
+  font-family: 'Knewave', cursive !important;
+  font-weight: 400 !important;
+  font-size: clamp(58px, 8.5vw, 112px) !important;
+  letter-spacing: -2px !important;
+  color: #ffe6c5 !important;
+  line-height: 1.2 !important;
+  text-shadow:
+    3px 5px 0 #32102b,
+    0 0 14px rgba(255, 207, 170, 0.2) !important;
+  transform: rotate(-1deg);
+}
+
+/* 2. Red brush-painted sun */
+.red-sun {
+  background:
+    radial-gradient(
+      circle,
+      #ff244c 0 68%,
+      #ed153f 70%,
+      transparent 72%
+    ) !important;
+  border-radius: 50%;
+  box-shadow:
+    0 0 12px rgba(255, 30, 75, 0.3),
+    inset 3px 2px 0 rgba(120, 0, 35, 0.15);
+  position: absolute;
+}
+
+/* Imperfect ink-brush outline */
+.red-sun::before {
+  content: '';
+  position: absolute;
+  inset: -5px;
+  border: 2px solid #e91b45;
+  border-radius: 48% 52% 46% 54%;
+  transform: rotate(-12deg);
+  opacity: 0.85;
+}
+
+.red-sun::after {
+  content: '';
+  position: absolute;
+  inset: -9px;
+  border: 1px dashed rgba(255, 48, 75, 0.9);
+  border-radius: 52% 48% 55% 45%;
+  transform: rotate(14deg);
+}
+
+/* 3. Japanese cloud ornaments */
+.quiz-decoration {
+  display: inline-block !important;
+  width: 90px !important;
+  height: 38px !important;
+  flex: 0 0 90px !important;
+  font-size: 0 !important;
+  background:
+    radial-gradient(ellipse at 50% 100%,
+      transparent 0 9px,
+      #ff244f 10px 12px,
+      transparent 13px),
+    radial-gradient(ellipse at 25% 100%,
+      transparent 0 9px,
+      #ff244f 10px 12px,
+      transparent 13px),
+    radial-gradient(ellipse at 75% 100%,
+      transparent 0 9px,
+      #ff244f 10px 12px,
+      transparent 13px),
+    radial-gradient(ellipse at 50% 100%,
+      transparent 0 20px,
+      #ff244f 21px 23px,
+      transparent 24px);
+  background-repeat: no-repeat;
+  filter: drop-shadow(0 0 4px #ff244f);
+}
+
+/* 4. Keep quiz title on one line */
+.quiz-label {
+  white-space: nowrap;
+}
+
+/* 5. Reference-style TAKE THE TEST button */
+.start-button {
+  position: relative;
+  isolation: isolate;
+  border: 2px solid #ff2867 !important;
+  border-radius: 0 !important;
+  background: #19091e !important;
+  color: #ffe8ca !important;
+  min-width: 300px;
+  padding: 16px 32px !important;
+  letter-spacing: 3px !important;
+  font-weight: 900 !important;
+  clip-path: polygon(
+    7% 0,
+    93% 0,
+    100% 50%,
+    93% 100%,
+    7% 100%,
+    0 50%
+  );
+  box-shadow:
+    0 0 8px #ff2867,
+    0 0 20px rgba(255, 40, 103, 0.5);
+  transition: filter 0.2s ease, transform 0.2s ease;
+}
+
+.start-button:hover {
+  filter: brightness(1.25);
+  transform: translateY(-2px);
+}
+
+.start-button span {
+  color: #ff2867 !important;
+  font-size: 1.3em;
+}
+
+
+
+
+
+/* RIGHT-HAND RED CHOPSTICKS CURSOR */
+html,
+body,
+#root,
+.app-shell {
+  cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40' viewBox='0 0 40 40'%3E%3Cg fill='none' stroke='%23ff2854' stroke-width='3' stroke-linecap='round'%3E%3Cpath d='M5 29 L34 7'/%3E%3Cpath d='M3 35 L32 13'/%3E%3C/g%3E%3C/svg%3E") 34 7, auto !important;
+}
+
+button,
+a,
+[role="button"],
+.sushi-plate {
+  cursor: pointer !important;
+}
+
+
+/* RED BRUSH SUN */
+.hero-logo-wrap {
+  position: relative !important;
+  isolation: isolate !important;
+}
+
+.red-sun {
+  display: block !important;
+  position: absolute !important;
+  z-index: 0 !important;
+  width: 130px !important;
+  height: 130px !important;
+  left: 50% !important;
+  top: 50% !important;
+  transform: translate(-50%, -50%) rotate(-9deg) !important;
+  border-radius: 48% 52% 45% 55% !important;
+  background:
+    radial-gradient(circle,
+      #ff294b 0 65%,
+      #f21c42 70%,
+      #df163c 75%,
+      transparent 76%) !important;
+  box-shadow: none !important;
+}
+
+.red-sun::before {
+  content: '' !important;
+  position: absolute !important;
+  inset: -5px !important;
+  border: 3px solid #f52a49 !important;
+  border-right-color: transparent !important;
+  border-bottom-color: #f52a49 !important;
+  border-radius: 46% 54% 48% 52% !important;
+  transform: rotate(13deg) !important;
+}
+
+.red-sun::after {
+  content: '' !important;
+  position: absolute !important;
+  inset: -10px !important;
+  border: 2px dashed #ed2948 !important;
+  border-left-color: transparent !important;
+  border-radius: 52% 48% 55% 45% !important;
+  transform: rotate(-15deg) !important;
+}
+
+.hero-logo {
+  position: relative !important;
+  z-index: 2 !important;
+}
+
+/* LOWER THE COMPLETE CONVEYOR — KEEP TABLE AND BACKGROUND STILL */
+.conveyor-belt {
+  transform: translateY(clamp(150px, 25vh, 220px));
+}
+
+/* Keep sushi plates and conveyor artwork together */
+.conveyor-belt .conveyor-svg {
   transform: none;
 }
 
-.completion-screen {
-  text-align: center;
-  padding: 40px 0;
+/* Preserve the moving neon lights */
+.conveyor-motion {
+  animation: conveyor-flow 1.2s linear infinite;
 }
 
-.completion-icon {
-  font-size: 65px;
-  margin-bottom: 20px;
+/* ==========================================
+   SUSHI MATE — LAYOUT RECOVERY
+   ========================================== */
+
+.landing-screen {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: calc(100vh - 76px);
+  overflow: visible;
 }
 
-@media (max-width: 650px) {
-  .quiz-panel {
-    padding: 50px 0;
-  }
-
-  .quiz-actions {
-    align-items: stretch;
-  }
-
-  .quiz-actions .start-button {
-    padding: 15px;
-    font-size: 11px;
-  }
+.hero-copy {
+  position: relative;
+  z-index: 8;
+  flex: 0 0 auto;
+  width: 100%;
+  padding-bottom: 0;
 }
 
-
-
-/* Custom single-colour neon chopstick cursor */
-body,
-button,
-.answer-option,
-.back-button {
-  cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'%3E%3Cpath d='M5 28 L26 4 M10 30 L29 7' stroke='%23090b18' stroke-width='5' stroke-linecap='round'/%3E%3Cpath d='M5 28 L26 4 M10 30 L29 7' stroke='%23ff6b9d' stroke-width='2.5' stroke-linecap='round'/%3E%3C/svg%3E") 26 4, auto;
+.sushi-restaurant {
+  position: relative;
+  isolation: isolate;
+  display: block;
+  flex: 0 0 auto;
+  width: min(100%, 1320px);
+  height: clamp(330px, 42vh, 420px);
+  margin: 0 auto;
+  overflow: visible;
 }
 
-
-
-/* QUIZ MODE: improve readability */
-.quiz-mode::before {
-  content: "";
+.conveyor-belt {
   position: absolute;
   inset: 0;
-  z-index: 0;
-  background: rgba(5, 7, 24, 0.58);
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  transform: none;
+}
+
+.conveyor-svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  transform: none;
+}
+
+.conveyor-moving-plate {
+  overflow: visible;
+}
+
+.selected-preview {
+  top: 42%;
+  left: 50%;
+  z-index: 7;
+  transform: translate(-50%, -50%);
+}
+
+.sushi-diner {
+  z-index: 4;
+}
+
+.dining-table {
+  z-index: 5;
+}
+
+.landing-footnote {
+  position: relative;
+  z-index: 6;
+  margin-top: 0;
+}
+
+@media (max-height: 800px) and (min-width: 701px) {
+  .hero-copy {
+    padding-top: 0;
+  }
+
+  .sushi-restaurant {
+    height: 330px;
+  }
+}
+
+
+/* FIX: CENTRE AND RESTORE THE RESTAURANT TEST BUTTON */
+
+.sushi-restaurant {
+  position: relative !important;
+}
+
+.restaurant-start-button {
+  appearance: none !important;
+  -webkit-appearance: none !important;
+
+  position: absolute !important;
+  left: 50% !important;
+  top: 48% !important;
+  right: auto !important;
+  bottom: auto !important;
+  z-index: 20 !important;
+
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 22px !important;
+
+  width: min(430px, 42vw) !important;
+  height: 82px !important;
+  min-height: 82px !important;
+  padding: 12px 35px !important;
+  margin: 0 !important;
+
+  transform: translate(-50%, -50%) !important;
+
+  border: 2px solid #ff4b91 !important;
+  border-radius: 0 !important;
+  clip-path: polygon(
+    8% 0, 92% 0, 100% 50%,
+    92% 100%, 8% 100%, 0 50%
+  ) !important;
+
+  background: linear-gradient(
+    180deg,
+    #641144,
+    #290725
+  ) !important;
+
+  color: #fff0d5 !important;
+  font-family: 'Nunito', sans-serif !important;
+  font-size: 23px !important;
+  font-weight: 900 !important;
+  letter-spacing: 3px !important;
+  white-space: nowrap !important;
+  cursor: pointer !important;
+
+  box-shadow:
+    0 0 5px #fff,
+    0 0 12px #ff4b91,
+    0 0 28px #ff2878,
+    0 0 48px rgba(255, 40, 120, .8),
+    inset 0 0 20px rgba(255, 100, 170, .3) !important;
+}
+
+.restaurant-start-button::before {
+  content: '' !important;
+  position: absolute !important;
+  inset: 5px !important;
+  z-index: -1 !important;
+  background: #260923 !important;
+  clip-path: polygon(
+    8% 0, 92% 0, 100% 50%,
+    92% 100%, 8% 100%, 0 50%
+  ) !important;
+}
+
+.restaurant-start-button span {
+  color: #ff75b2 !important;
+  font-size: 1.5em !important;
+  text-shadow: 0 0 12px #ff398b !important;
+}
+
+.restaurant-start-button:hover {
+  transform: translate(-50%, -50%) scale(1.04) !important;
+  box-shadow:
+    0 0 8px #fff,
+    0 0 18px #ff4b91,
+    0 0 38px #ff2878,
+    0 0 60px rgba(255, 40, 120, .9) !important;
+}
+
+@media (max-width: 700px) {
+  .restaurant-start-button {
+    width: min(290px, 75vw) !important;
+    height: 60px !important;
+    min-height: 60px !important;
+    font-size: 15px !important;
+    letter-spacing: 2px !important;
+  }
+}
+
+
+
+/* Personality preview — floating above and to the right of the belt */
+
+.selected-preview {
+  position: absolute !important;
+  left: auto !important;
+  right: 2% !important;
+  top: -135px !important;
+  bottom: auto !important;
+
+  width: 280px !important;
+  max-width: 23vw !important;
+  transform: none !important;
+  z-index: 25 !important;
+}
+
+/* Keep it readable on smaller screens */
+@media (max-width: 900px) {
+  .selected-preview {
+    right: 2% !important;
+    top: -95px !important;
+    width: 240px !important;
+    max-width: 32vw !important;
+  }
+}
+
+@media (max-width: 600px) {
+  .selected-preview {
+    right: 3% !important;
+    top: -75px !important;
+    width: 190px !important;
+    max-width: 45vw !important;
+  }
+}
+
+
+.dining-table {
+  overflow: visible;
+}
+
+.dining-table::before,
+.dining-table::after {
   pointer-events: none;
 }
 
-.quiz-mode .quiz-panel {
-  background: rgba(8, 11, 30, 0.88);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(130, 145, 220, 0.25);
-  border-radius: 18px;
-  padding: 40px;
-  box-shadow: 0 15px 60px rgba(0, 0, 0, 0.35);
-}
-
-.quiz-mode .answer-option {
-  background: rgba(22, 27, 52, 0.96);
-}
-
-.quiz-mode .answer-option:hover,
-.quiz-mode .answer-option.selected {
-  background: rgba(55, 35, 75, 0.98);
-}
-
-@media (max-width: 650px) {
-  .quiz-mode .quiz-panel {
-    padding: 25px 18px;
-  }
+.pixel-tableware {
+  position: absolute;
+  left: 50%;
+  top: -15px;
+  transform: translateX(-50%);
+  width: 90%;
+  height: 150px;
+  object-fit: contain;
+  image-rendering: pixelated;
+  z-index: 2;
+  pointer-events: none;
 }
 
 
-/* RESULTS SCREEN — separate from the quiz panel styling */
-
-.quiz-mode .quiz-panel:has(.result-page) {
-  width: min(520px, 100%);
-  max-width: 100%;
-  box-sizing: border-box;
-  padding: 20px 18px 30px;
-  margin: 20px auto;
-  background: transparent;
-  border: none;
-  border-radius: 0;
-  box-shadow: none;
-  backdrop-filter: none;
-  -webkit-backdrop-filter: none;
+/* Pixel-art tableware illustration */
+.pixel-tableware {
+  position: absolute;
+  z-index: 3;
+  left: 50%;
+  top: -70px;
+  transform: translateX(-50%);
+  width: 92%;
+  height: 155px;
+  object-fit: contain;
+  object-position: center;
+  image-rendering: pixelated;
+  pointer-events: none;
 }
 
-.result-page {
+.disclaimer {
+  font-family: Arial, sans-serif;
+  font-size: 11px !important;
+  font-weight: 300 !important;
+  letter-spacing: 0.4px !important;
+  text-transform: none !important;
+  opacity: 0.8;
+}
+
+
+
+/* =========================================
+   SUSHI MATE — JAPANESE BRUSH LOGO
+========================================= */
+
+/* Make the sun look hand-painted, not like a perfect circle */
+.red-sun {
+  width: clamp(145px, 17vw, 205px) !important;
+  height: auto !important;
+  aspect-ratio: 1;
+  left: 50% !important;
+  top: 50% !important;
+  transform: translate(-50%, -50%) rotate(-8deg) !important;
+  border-radius: 47% 53% 51% 46% !important;
+
+  background:
+    radial-gradient(
+      ellipse at 48% 46%,
+      #ff3048 0%,
+      #f51c3d 62%,
+      #df1237 76%,
+      transparent 77%
+    ) !important;
+
+  box-shadow: none !important;
+}
+
+/* Uneven painted outer ring */
+.red-sun::before {
+  inset: -7px !important;
+  border: 3px solid #ed2546 !important;
+  border-right-color: transparent !important;
+  border-bottom-color: rgba(237, 37, 70, .75) !important;
+  border-radius: 44% 56% 48% 52% !important;
+  transform: rotate(17deg) !important;
+}
+
+/* A second imperfect brush stroke */
+.red-sun::after {
+  inset: -12px !important;
+  border: 2px solid rgba(237, 37, 70, .85) !important;
+  border-left-color: transparent !important;
+  border-top-color: transparent !important;
+  border-radius: 53% 47% 56% 44% !important;
+  transform: rotate(-23deg) !important;
+}
+
+/* Brush lettering */
+.restaurant-heading .hero-logo {
+  font-family: 'Sedgwick Ave Display', 'Permanent Marker', cursive !important;
+  font-weight: 400 !important;
+  letter-spacing: -2px !important;
+  color: #ffe7c3 !important;
+  text-shadow:
+    3px 5px 0 rgba(38, 13, 30, .75),
+    0 0 18px rgba(255, 200, 165, .16) !important;
+  transform: rotate(-1deg);
+}
+
+/* Keep the title in front of the sun */
+.hero-logo-wrap {
+  isolation: isolate;
+}
+
+.hero-logo {
+  position: relative;
+  z-index: 2;
+}
+
+
+
+/* =========================================
+   SUSHI MATE — FINAL LOGO LAYER & FONT FIX
+========================================= */
+
+.hero-logo-wrap {
+  position: relative !important;
+  isolation: isolate !important;
+  z-index: 1;
+}
+
+/* Sun stays behind the lettering, not the counter */
+.red-sun {
+  position: absolute !important;
+  z-index: -1 !important;
+  pointer-events: none !important;
+
+  width: clamp(125px, 14vw, 175px) !important;
+  height: auto !important;
+  aspect-ratio: 1;
+
+  left: 50% !important;
+  top: 50% !important;
+  transform: translate(-50%, -50%) rotate(-8deg) !important;
+
+  border-radius: 47% 53% 51% 46% !important;
+
+  background:
+    radial-gradient(
+      ellipse at 48% 45%,
+      #ff3048 0%,
+      #f51c3d 65%,
+      #df1237 78%,
+      transparent 79%
+    ) !important;
+
+  box-shadow: none !important;
+}
+
+/* Hand-painted outer circle */
+.red-sun::before {
+  content: "" !important;
+  position: absolute !important;
+  inset: -6px !important;
+  border: 3px solid #ed2546 !important;
+  border-right-color: transparent !important;
+  border-bottom-color: rgba(237, 37, 70, .7) !important;
+  border-radius: 44% 56% 48% 52% !important;
+  transform: rotate(17deg) !important;
+}
+
+/* Incomplete second brush stroke */
+.red-sun::after {
+  content: "" !important;
+  position: absolute !important;
+  inset: -11px !important;
+  border: 2px solid rgba(237, 37, 70, .8) !important;
+  border-left-color: transparent !important;
+  border-top-color: transparent !important;
+  border-radius: 53% 47% 56% 44% !important;
+  transform: rotate(-23deg) !important;
+}
+
+/* Target the actual logo heading */
+.hero-logo {
+  position: relative !important;
+  z-index: 2 !important;
+
+  font-family: 'Sedgwick Ave Display', cursive !important;
+  font-size: clamp(58px, 8.2vw, 108px) !important;
+  font-weight: 400 !important;
+  letter-spacing: -2px !important;
+  line-height: 1.1 !important;
+  color: #ffe7c3 !important;
+
+  text-shadow:
+    3px 5px 0 rgba(38, 13, 30, .75),
+    0 0 18px rgba(255, 200, 165, .16) !important;
+
+  transform: rotate(-1deg);
+}
+
+
+/* FORCE JAPANESE BRUSH-STYLE LOGO FONT */
+.restaurant-heading .hero-logo,
+.hero-copy .hero-logo {
+  font-family: 'Sedgwick Ave Display', cursive !important;
+  font-size: clamp(62px, 8.2vw, 112px) !important;
+  font-weight: 400 !important;
+  letter-spacing: -2px !important;
+  line-height: 1.1 !important;
+  color: #ffe7c3 !important;
+  text-transform: uppercase;
+  text-shadow:
+    3px 5px 0 rgba(38, 13, 30, .75),
+    0 0 18px rgba(255, 200, 165, .16) !important;
+  transform: rotate(-1deg);
+}
+
+
+
+
+/* Brush-style SUSHI MATE logo image */
+.hero-logo-wrap {
+  position: relative !important;
+  display: flex !important;
+  justify-content: center;
+  align-items: center;
   width: 100%;
-  min-width: 0;
-  padding: 10px 0 25px;
+  max-width: 900px;
+  margin: 8px auto 12px;
 }
 
-.result-card-frame {
-  width: 100%;
-  max-width: 400px;
-  margin: 0 auto;
-}
-
-.finished-personality-card {
+.hero-logo-img {
   display: block;
-  width: 100%;
+  width: min(92vw, 600px);
   height: auto;
   object-fit: contain;
+  filter: drop-shadow(0 5px 5px rgba(20, 5, 25, .35));
 }
 
-@media (max-width: 650px) {
-  .quiz-mode .quiz-panel:has(.result-page) {
-    padding: 12px 8px 25px;
+
+/* =====================================
+   SUSHI MATE — RAISED NEON CONVEYOR
+===================================== */
+
+.conveyor-shadow {
+  stroke: rgba(0, 0, 0, .8) !important;
+  stroke-width: 126px !important;
+  filter: blur(11px);
+}
+
+.conveyor-sidewall {
+  fill: none;
+  stroke: #35102f;
+  stroke-width: 112px;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  filter: drop-shadow(0 12px 8px rgba(0,0,0,.7));
+}
+
+.conveyor-base {
+  stroke: #701b52 !important;
+  stroke-width: 100px !important;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  filter: none !important;
+}
+
+.conveyor-track-light {
+  fill: none;
+  stroke: #a83b70;
+  stroke-width: 91px;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  opacity: .9;
+}
+
+.conveyor-outer-led {
+  fill: none;
+  stroke: #ff258e;
+  stroke-width: 104px;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  opacity: .95;
+  filter: drop-shadow(0 0 5px #ff258e)
+          drop-shadow(0 0 13px #ff258e);
+}
+
+.conveyor-inner-led {
+  fill: none;
+  stroke: #ffb1dc;
+  stroke-width: 88px;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  opacity: .95;
+  filter: drop-shadow(0 0 5px #ff4b9c);
+}
+
+.conveyor-motion {
+  stroke: #fff0fa !important;
+  stroke-width: 3px !important;
+  stroke-dasharray: 3 24 !important;
+  filter: drop-shadow(0 0 5px #ff9bcf);
+}
+
+
+/* Raised dimensional sushi conveyor */
+.conveyor-structure-shadow {
+  fill: #10091e;
+  stroke: #10091e;
+  filter: blur(9px);
+}
+
+.conveyor-sidewall {
+  fill: #210d2b;
+  stroke: #17091f;
+  stroke-width: 3px;
+  filter: drop-shadow(0 12px 7px rgba(0,0,0,.65));
+}
+
+.conveyor-deck {
+  fill: url(#conveyor-deck-gradient);
+  stroke: #a43c70;
+  stroke-width: 2px;
+}
+
+.conveyor-panel-seams {
+  fill: none;
+  stroke: rgba(255,174,211,.3);
+  stroke-width: 2px;
+}
+
+.conveyor-edge-glow {
+  fill: none;
+  stroke: #ff168c;
+  stroke-width: 4px;
+  filter: drop-shadow(0 0 8px #ff168c)
+          drop-shadow(0 0 16px #ff168c);
+}
+
+.conveyor-edge-light {
+  fill: none;
+  stroke: #ffb1dc;
+  stroke-width: 1.8px;
+}
+
+.conveyor-motion {
+  fill: none;
+  stroke: #ffe4f3;
+  stroke-width: 3px;
+  stroke-dasharray: 3 24;
+  animation: conveyor-flow 1.2s linear infinite;
+}
+
+
+
+
+/* RESULTS PAGE — THREE ACTIONS ONLY */
+
+.social-share-section {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 100%;
+  margin-top: 20px;
+}
+
+/* Hide old social media heading */
+.social-share-heading {
+  display: none;
+}
+
+/* Hide individual Instagram and TikTok buttons */
+.instagram-share-button,
+.tiktok-share-button {
+  display: none !important;
+}
+
+/* Three main action buttons */
+.save-card-button,
+.share-friends-button,
+.retake-test-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  padding: 15px 20px;
+  border-radius: 10px;
+  font-size: 0.9rem;
+  font-weight: bold;
+  letter-spacing: 1px;
+  cursor: pointer;
+  transition: transform 0.2s ease, opacity 0.2s ease;
+}
+
+.save-card-button {
+  background: #ff2854;
+  color: white;
+  border: none;
+}
+
+.share-friends-button {
+  background: #111;
+  color: white;
+  border: 1px solid #ff2854;
+}
+
+.retake-test-button {
+  background: transparent;
+  color: #ff2854;
+  border: 1px solid #ff2854;
+}
+
+.save-card-button:hover,
+.share-friends-button:hover,
+.retake-test-button:hover {
+  transform: translateY(-2px);
+}
+
+.save-card-button:active,
+.share-friends-button:active,
+.retake-test-button:active {
+  transform: scale(0.98);
+}
+
+
+
+/* NEON NEXT QUESTION BUTTON */
+
+.quiz-navigation .start-button {
+  background: linear-gradient(
+    110deg,
+    #5428d8 0%,
+    #7650ff 45%,
+    #00c8ff 100%
+  );
+
+  color: #ffffff;
+  border: 1px solid #8c72ff;
+  border-radius: 12px;
+
+  padding: 17px 32px;
+  min-width: 225px;
+
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: 2px;
+
+  clip-path: none;
+
+  box-shadow:
+    0 0 8px rgba(118, 80, 255, 0.65),
+    0 0 20px rgba(0, 200, 255, 0.25),
+    inset 0 0 12px rgba(255, 255, 255, 0.12);
+
+  transition:
+    all 0.25s ease;
+
+  cursor: pointer;
+}
+
+.quiz-navigation .start-button:hover:not(:disabled) {
+  background: linear-gradient(
+    110deg,
+    #7045ff,
+    #8c65ff,
+    #38ddff
+  );
+
+  transform: translateY(-3px);
+
+  box-shadow:
+    0 0 12px rgba(118, 80, 255, 0.8),
+    0 0 30px rgba(0, 200, 255, 0.5),
+    0 0 45px rgba(118, 80, 255, 0.2);
+}
+
+.quiz-navigation .start-button:active:not(:disabled) {
+  transform: translateY(0) scale(0.98);
+}
+
+.quiz-navigation .start-button:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+
+
+
+/* COMMUNITY STATISTICS */
+
+.community-stats {
+  width: min(650px, 90%);
+  margin: 0px auto 25px;
+  padding: 18px 22px;
+  background: rgba(12, 9, 35, 0.88);
+  border: 1px solid rgba(255, 105, 180, 0.3);
+  border-radius: 14px;
+  box-shadow: 0 0 20px rgba(255, 50, 150, 0.1);
+  backdrop-filter: blur(12px);
+}
+
+.community-stats-heading {
+  text-align: center;
+  margin-bottom: 12px;
+}
+
+.community-stats-heading > span {
+  color: #ff8ac5;
+  font-size: 10px;
+  letter-spacing: 2px;
+}
+
+.community-stats-heading h2 {
+  color: #ffe1f0;
+  font-size: 19px;
+  margin: 6px 0;
+}
+
+.community-stats-heading p {
+  color: #c9b5d9;
+  font-size: 11px;
+  margin: 0;
+}
+
+.community-total {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin: 10px auto 16px;
+  color: #ffb4d9;
+}
+
+.community-total strong {
+  font-size: 20px;
+}
+
+.community-total span {
+  font-size: 9px;
+  letter-spacing: 1.5px;
+}
+
+.community-ranking {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 9px 18px;
+}
+
+.community-row {
+  min-width: 0;
+}
+
+.community-row-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 4px;
+  color: #fce8f4;
+  font-size: 10px;
+}
+
+.community-row-info span:first-child {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.community-row-info span:last-child {
+  color: #ff9dce;
+  font-size: 10px;
+  white-space: nowrap;
+}
+
+.community-bar {
+  height: 3px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.community-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #ff4fa3, #b66aff);
+  border-radius: 10px;
+  transition: width 0.5s ease;
+}
+
+@media (max-width: 600px) {
+  .community-stats {
+    padding: 16px 14px;
+    margin-top: 25px;
   }
 
-  .result-card-frame {
-    max-width: 100%;
+  .community-ranking {
+    grid-template-columns: 1fr;
+    gap: 9px;
   }
+}
+
+
+
+/* SUSHI CONFESSIONS */
+
+.sushi-confessions {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 24px;
+  margin: 0;
+  background: rgba(12, 9, 35, 0.92);
+  border: 1px solid rgba(255, 105, 180, 0.4);
+  border-radius: 14px;
+  box-shadow:
+    0 0 15px rgba(255, 50, 150, 0.12),
+    inset 0 0 20px rgba(182, 106, 255, 0.05);
+  backdrop-filter: blur(12px);
+}
+
+.confessions-heading {
+  margin-bottom: 18px;
+}
+
+.confessions-heading > span {
+  color: #ff8ac5;
+  font-size: 10px;
+  letter-spacing: 2px;
+}
+
+.confessions-heading h2 {
+  color: #ffe1f0;
+  font-size: 22px;
+  margin: 8px 0;
+  letter-spacing: 1px;
+}
+
+.confessions-heading p {
+  color: #c9b5d9;
+  font-size: 12px;
+}
+
+.confessions-form textarea {
+  display: block;
+  box-sizing: border-box;
+  width: 100%;
+  min-height: 95px;
+  padding: 14px;
+  resize: vertical;
+  color: #ffe1f0;
+  background: rgba(25, 15, 48, 0.95);
+  border: 1px solid rgba(255, 105, 180, 0.45);
+  border-radius: 8px;
+  font: inherit;
+  font-size: 13px;
+  outline: none;
+}
+
+.confessions-form textarea:focus {
+  border-color: #ff70b8;
+  box-shadow: 0 0 12px rgba(255, 70, 170, 0.3);
+}
+
+.confessions-form textarea::placeholder {
+  color: #9e87b4;
+}
+
+.confessions-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  margin-top: 12px;
+}
+
+.confessions-footer span {
+  color: #c9b5d9;
+  font-size: 11px;
+}
+
+.confessions-footer button {
+  padding: 11px 16px;
+  color: #fff0f8;
+  background: linear-gradient(110deg, #e83c9a, #8d43d8);
+  border: 1px solid #ff9bd0;
+  border-radius: 6px;
+  font-size: 10px;
+  font-weight: bold;
+  letter-spacing: 1px;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.confessions-footer button:hover:not(:disabled) {
+  box-shadow: 0 0 16px rgba(255, 75, 170, 0.5);
+  transform: translateY(-2px);
+}
+
+.confessions-footer button:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+
+/* Sushi After Dark — neon tabs */
+.confessions-tabs {
+  display: flex;
+  gap: 10px;
+  margin: 22px 0 18px;
+}
+
+.confessions-tabs button {
+  background: rgba(255, 70, 170, 0.08);
+  color: #ff79c6;
+  border: 1px solid rgba(255, 105, 180, 0.45);
+  border-radius: 6px;
+  padding: 10px 15px;
+  font-family: inherit;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.confessions-tabs button:hover,
+.confessions-tabs button.active {
+  background: rgba(255, 70, 170, 0.2);
+  border-color: #ff69b4;
+  color: #fff;
+  box-shadow: 0 0 12px rgba(255, 70, 170, 0.25);
+}
+
+/* Neon reaction buttons */
+.confession-reactions {
+  display: flex;
+  gap: 8px;
+  margin-top: 14px;
+}
+
+.confession-reactions button {
+  background: rgba(20, 14, 48, 0.9);
+  color: #f8dff0;
+  border: 1px solid rgba(255, 105, 180, 0.35);
+  border-radius: 6px;
+  padding: 7px 12px;
+  font-family: inherit;
+  font-size: 13px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.confession-reactions button:hover,
+.confession-reactions button.reacted {
+  border-color: #ff69b4;
+  background: rgba(255, 70, 170, 0.18);
+  box-shadow: 0 0 10px rgba(255, 70, 170, 0.2);
+}
+
+.confession-reactions button:disabled {
+  opacity: 1;
+  cursor: default;
+}
+
+.confessions-message {
+  color: #7dffbd;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  margin-top: 12px;
+  text-shadow: 0 0 8px rgba(125, 255, 189, 0.25);
+}
+
+
+
+.confession-author {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.confession-author span:first-child {
+  color: #ff79c6;
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.4px;
+}
+
+.confession-author span:last-child {
+  color: #b9a8d4;
+  background: rgba(185, 168, 212, 0.08);
+  border: 1px solid rgba(185, 168, 212, 0.25);
+  border-radius: 4px;
+  padding: 4px 7px;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 1.2px;
+  white-space: nowrap;
+  text-transform: uppercase;
+}
+
+.confession-post > p {
+  color: #fff0f8;
+  font-size: 17px;
+  line-height: 1.65;
+  margin: 0;
+}
+
+
+
+/* Compact sushi reaction pills */
+.confession-reactions {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  margin-top: 16px;
+}
+
+.confession-reactions button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  min-width: 48px;
+  padding: 5px 9px;
+  background: rgba(255, 105, 180, 0.045);
+  color: #e8d8f5;
+  border: 1px solid rgba(255, 105, 180, 0.2);
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.confession-reactions button:hover {
+  transform: translateY(-2px);
+  background: rgba(255, 105, 180, 0.14);
+  border-color: #ff79c6;
+  box-shadow: 0 0 12px rgba(255, 105, 180, 0.2);
+}
+
+.confession-reactions button.reacted {
+  background: rgba(255, 105, 180, 0.18);
+  border-color: #ff79c6;
+  color: #fff;
+}
+
+/* =================================
+   SUSHI AFTER DARK — TOKYO NIGHT
+================================= */
+
+.sushi-confessions {
+  position: relative;
+  overflow: hidden;
+  background:
+    linear-gradient(
+      145deg,
+      rgba(19, 9, 42, 0.97),
+      rgba(8, 8, 32, 0.97)
+    );
+  border: 1px solid rgba(255, 75, 190, 0.55);
+  border-radius: 12px;
+  box-shadow:
+    0 0 20px rgba(255, 40, 160, 0.12),
+    inset 0 0 35px rgba(100, 40, 180, 0.08);
+}
+
+/* Neon signage heading */
+.confessions-heading {
+  position: relative;
+  padding-bottom: 18px;
+  border-bottom: 1px solid rgba(255, 105, 180, 0.22);
+}
+
+.confessions-heading h2 {
+  color: #ffe4f4;
+  text-shadow:
+    0 0 8px rgba(255, 90, 190, 0.35);
+  letter-spacing: 1.5px;
+}
+
+.confessions-heading span {
+  color: #ff70c8;
+  letter-spacing: 2px;
+}
+
+/* Japanese-inspired compose panel */
+.confessions-compose {
+  margin-top: 20px;
+  padding: 17px;
+  background: rgba(255, 255, 255, 0.025);
+  border: 1px solid rgba(80, 220, 255, 0.2);
+  border-left: 2px solid #ff63bd;
+  border-radius: 8px;
+}
+
+/* Input field */
+.confessions-form textarea {
+  background: rgba(10, 8, 30, 0.9);
+  border: 1px solid rgba(255, 90, 190, 0.4);
+  color: #fff0fa;
+  border-radius: 6px;
+  transition: all 0.25s ease;
+}
+
+.confessions-form textarea:focus {
+  outline: none;
+  border-color: #58eaff;
+  box-shadow:
+    0 0 10px rgba(88, 234, 255, 0.18),
+    0 0 18px rgba(255, 90, 190, 0.12);
+}
+
+/* Transmission button */
+.confessions-footer button {
+  background: linear-gradient(110deg, #d72d96, #7126a5);
+  border: 1px solid #ff70c8;
+  color: white;
+  letter-spacing: 1px;
+  box-shadow: 0 0 12px rgba(255, 50, 170, 0.18);
+}
+
+.confessions-footer button:hover:not(:disabled) {
+  background: linear-gradient(110deg, #ff48b4, #923be0);
+  box-shadow: 0 0 18px rgba(255, 50, 170, 0.35);
+}
+
+/* Community feed separators */
+.confession-post {
+  position: relative;
+  padding: 19px 0;
+  border-bottom: 1px solid rgba(90, 210, 255, 0.13);
+}
+
+.confession-post:last-child {
+  border-bottom: none;
+}
+
+/* Cyan and pink reaction accents */
+.confession-reactions button:hover {
+  border-color: #58eaff;
+  box-shadow: 0 0 12px rgba(88, 234, 255, 0.22);
+}
+
+/* Feed tabs */
+.confessions-tabs button.active {
+  background: linear-gradient(
+    110deg,
+    rgba(255, 70, 170, 0.2),
+    rgba(70, 190, 255, 0.12)
+  );
+  border-color: #ff70c8;
+  box-shadow: 0 0 13px rgba(255, 70, 170, 0.2);
+}
+
+/* SUSHI AFTER DARK — COMPACT LAYOUT */
+
+.sushi-confessions {
+  padding: 18px 22px !important;
+}
+
+.confessions-heading {
+  padding-bottom: 12px;
+}
+
+.confessions-heading h2 {
+  margin-bottom: 6px;
+  font-size: 22px;
+}
+
+.confessions-heading p {
+  margin-bottom: 0;
+  font-size: 12px;
+}
+
+.confessions-compose {
+  margin-top: 12px;
+  padding: 12px 14px;
+}
+
+.confessions-label {
+  margin-bottom: 8px;
+  font-size: 13px;
+}
+
+.confessions-compose > p {
+  margin: 8px 0;
+  font-size: 13px;
+}
+
+.confessions-form textarea {
+  min-height: 75px;
+  height: 75px;
+  padding: 10px 12px;
+}
+
+.confessions-footer {
+  margin-top: 6px;
+}
+
+.confessions-message {
+  margin-top: 7px;
+}
+
+.confessions-tabs {
+  margin: 12px 0;
+}
+
+.confession-post {
+  padding: 12px 0;
+}
+
+.confession-author {
+  margin-bottom: 8px;
+}
+
+.confession-post > p {
+  font-size: 15px;
+  line-height: 1.45;
+}
+
+.confession-reactions {
+  margin-top: 10px;
+}
+
+
+
+/* Reply interaction */
+.reply-toggle {
+  margin-left: auto;
+  background: rgba(75, 210, 255, 0.07);
+  border: 1px solid rgba(88, 234, 255, 0.35);
+  border-radius: 20px;
+  padding: 5px 9px;
+  color: #58eaff;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  cursor: pointer;
+}
+
+.reply-toggle:hover {
+  background: rgba(88, 234, 255, 0.15);
+  box-shadow: 0 0 10px rgba(88, 234, 255, 0.2);
+}
+
+.confession-reply-section {
+  margin-top: 15px;
+  padding: 13px;
+  background: rgba(10, 8, 30, 0.65);
+  border-left: 2px solid #58eaff;
+  border-radius: 5px;
+}
+
+.reply-heading {
+  color: #58eaff;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  margin-bottom: 12px;
+}
+
+.confession-reply {
+  padding: 10px;
+  margin-bottom: 8px;
+  background: rgba(255, 255, 255, 0.035);
+  border: 1px solid rgba(255, 105, 180, 0.13);
+  border-radius: 6px;
+}
+
+.reply-author {
+  color: #ff79c6;
+  font-size: 12px;
+  font-weight: 700;
+  margin-bottom: 6px;
+}
+
+.reply-author span {
+  color: #a99bbd;
+  font-size: 9px;
+  margin-left: 8px;
+  letter-spacing: 1px;
+}
+
+.confession-reply > p,
+.no-replies {
+  color: #f4e8f3;
+  font-size: 13px;
+  line-height: 1.5;
+  margin: 0;
+}
+
+.no-replies {
+  color: #a99bbd;
+  margin-bottom: 12px;
+}
+
+.confession-reply-form textarea {
+  width: 100%;
+  min-height: 58px;
+  resize: vertical;
+  box-sizing: border-box;
+  padding: 10px;
+  background: #100b25;
+  color: #fff0fa;
+  border: 1px solid rgba(88, 234, 255, 0.3);
+  border-radius: 5px;
+  font: inherit;
+  font-size: 12px;
+}
+
+.confession-reply-form textarea:focus {
+  outline: none;
+  border-color: #58eaff;
+  box-shadow: 0 0 10px rgba(88, 234, 255, 0.15);
+}
+
+.reply-form-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 7px;
+}
+
+.reply-form-footer span {
+  color: #a99bbd;
+  font-size: 10px;
+}
+
+.reply-form-footer button {
+  padding: 7px 12px;
+  background: linear-gradient(110deg, #d72d96, #7126a5);
+  border: 1px solid #ff70c8;
+  border-radius: 5px;
+  color: white;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  cursor: pointer;
+}
+
+.reply-form-footer button:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+
+.write-reply-button {
+  display: inline-flex;
+  align-items: center;
+  margin-top: 12px;
+  padding: 7px 0;
+  background: transparent;
+  border: none;
+  color: #58eaff;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1.2px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.write-reply-button:hover {
+  color: #ff79c6;
+  text-shadow: 0 0 10px rgba(255, 105, 180, 0.6);
+  transform: translateX(3px);
+}
+
+.confession-reply-form textarea {
+  min-height: 55px;
+  height: 55px;
+  resize: vertical;
+}
+
+.reply-form-footer button[type="button"] {
+  background: transparent;
+  color: #a99bbd;
+  border: none;
+  font-size: 10px;
+  cursor: pointer;
+}
+
+
+
+
+
+
+.top-bar-actions {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+
+
+.social-club-nav {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  background: linear-gradient(145deg, #073b50, #101a39);
+  border: 1px solid #42f5ff;
+  border-radius: 6px;
+  color: #c9fcff;
+  padding: 7px 15px;
+  font-family: inherit;
+  font-size: 11px;
+  font-weight: 900;
+  letter-spacing: 1.5px;
+  cursor: pointer;
+  box-shadow: 0 0 12px rgba(66, 245, 255, 0.45);
+  transition: all 0.3s ease;
+}
+
+.lantern-icon {
+  display: inline-block;
+  font-size: 25px;
+  transform-origin: top center;
+  animation: lantern-swing 3s ease-in-out infinite;
+  filter: drop-shadow(0 0 6px #42f5ff);
+}
+
+.lantern-label {
+  white-space: nowrap;
+}
+
+.social-club-nav:hover {
+  background: linear-gradient(145deg, #087e91, #173c72);
+  border-color: #ffffff;
+  color: #ffffff;
+  box-shadow: 0 0 20px #42f5ff;
+  transform: translateY(-2px);
+}
+
+
+
+.social-club-header {
+  display: flex;
+  justify-content: flex-start;
+  width: min(1200px, 96%);
+  margin: 20px auto;
+}
+
+.social-club-back {
+  background: rgba(8, 20, 45, 0.9);
+  border: 1px solid #42f5ff;
+  color: #bdfaff;
+  padding: 10px 18px;
+  border-radius: 5px;
+  font-family: inherit;
+  font-weight: 800;
+  letter-spacing: 1px;
+  cursor: pointer;
+  box-shadow: 0 0 10px rgba(66, 245, 255, 0.25);
+  transition: all 0.2s ease;
+}
+
+.social-club-back:hover {
+  background: #087e91;
+  color: white;
+  box-shadow: 0 0 18px #42f5ff;
+}
+
+
+
+
+.delete-confession-button {
+  display: block;
+  margin: 8px 0 12px auto;
+  padding: 6px 10px;
+  background: rgba(255, 40, 110, 0.12);
+  border: 1px solid #ff4f91;
+  border-radius: 5px;
+  color: #ff75a8;
+  font-family: inherit;
+  font-size: 10px;
+  font-weight: bold;
+  letter-spacing: 1px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.delete-confession-button:hover {
+  background: rgba(255, 40, 110, 0.3);
+  box-shadow: 0 0 10px rgba(255, 79, 145, 0.5);
+  color: white;
+}
+
+
+
+.admin-access {
+  position: fixed;
+  bottom: 16px;
+  right: 18px;
+  z-index: 9999;
+}
+
+.admin-key-button {
+  width: 30px;
+  height: 30px;
+  padding: 0;
+  border: 1px solid rgba(66, 245, 255, 0.35);
+  border-radius: 50%;
+  background: rgba(12, 9, 35, 0.8);
+  color: #42f5ff;
+  font-size: 14px;
+  cursor: pointer;
+  opacity: 0.55;
+  transition: all 0.25s ease;
+}
+
+.admin-key-button:hover {
+  opacity: 1;
+  box-shadow: 0 0 12px #42f5ff;
+  transform: scale(1.1);
+}
+
+.admin-login-panel {
+  position: absolute;
+  bottom: 40px;
+  right: 0;
+  width: 230px;
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  background: #100a25;
+  border: 1px solid #42f5ff;
+  border-radius: 8px;
+  box-shadow: 0 0 18px rgba(66, 245, 255, 0.2);
 }

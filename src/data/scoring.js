@@ -7,7 +7,7 @@ import { personalities } from './personalities'
 
 const answerMatches = [
   ['spicy-tuna', 'unagi', 'tamago', 'spicy-salmon'],
-  ['extra-spicy-curry', 'bicep-sushi', 'plain-white-rice', 'takoyaki'],
+  ['extra-spicy-curry', 'bicep-sushi', 'plain-white-rice', 'dorayaki'],
   ['avocado-maki', 'unagi', 'takoyaki', 'ramen'],
   ['karaage', 'spicy-tuna', 'unagi', 'plain-white-rice'],
   ['california-roll', 'unagi', 'katsu-curry', 'matcha-tiramisu'],
@@ -17,7 +17,7 @@ const answerMatches = [
   ['dorayaki', 'salmon-nigiri', 'plain-white-rice', 'ramen'],
   ['tamago', 'karaage', 'avocado-maki', 'mochi'],
   ['mochi', 'ramen', 'salmon-nigiri', 'karaage'],
-  ['bicep-sushi', 'avocado-maki', 'pickled-ginger', 'shrimp-tempura'],
+  ['bicep-sushi', 'avocado-maki', 'matcha-latte', 'shrimp-tempura'],
   ['matcha-latte', 'takoyaki', 'pickled-ginger', 'matcha-tiramisu'],
   ['bicep-sushi', 'katsu-curry', 'extra-spicy-curry', 'tamago'],
   ['bicep-sushi', 'extra-spicy-curry', 'matcha-tiramisu', 'plain-white-rice'],
@@ -29,8 +29,6 @@ const answerMatches = [
 ]
 
 // Count how often each personality appears in the answer map.
-// This lets us compensate for personalities that have more opportunities
-// to receive points than others.
 const matchFrequency = {}
 
 answerMatches.flat().forEach((personalityId) => {
@@ -38,6 +36,7 @@ answerMatches.flat().forEach((personalityId) => {
     (matchFrequency[personalityId] || 0) + 1
 })
 
+// Main quiz scoring function.
 export function calculateResult(answers) {
   const scores = {}
   const directMatches = {}
@@ -71,13 +70,11 @@ export function calculateResult(answers) {
       firstMatchOrder[personalityId] = questionIndex
     }
   })
-console.log(
-  'ANSWER INDEXES:',
-  answers.map((answer) => answer?.answerIndex)
-)
+
   const winningPersonalityId = Object.keys(scores).sort((a, b) => {
     // First: highest adjusted score.
     const scoreDifference = scores[b] - scores[a]
+
     if (Math.abs(scoreDifference) > 0.000001) {
       return scoreDifference
     }
@@ -93,8 +90,6 @@ console.log(
     // Third: whichever personality received a match first.
     return firstMatchOrder[a] - firstMatchOrder[b]
   })[0]
-console.log('SUSHI SCORES:', scores)
-console.log('WINNER ID:', winningPersonalityId)
 
   const result = personalities.find(
     (personality) => personality.id === winningPersonalityId
@@ -102,4 +97,43 @@ console.log('WINNER ID:', winningPersonalityId)
 
   // Safe fallback only if no valid answers were supplied.
   return result || personalities[0]
+}
+
+// --------------------------------------------------
+// TEMPORARY DEVELOPMENT TEST
+// Run 10,000 random quiz combinations.
+// This does NOT change the actual scoring algorithm.
+// --------------------------------------------------
+
+if (import.meta.env.DEV && typeof window !== 'undefined') {
+  window.runSushiSimulation = (iterations = 10000) => {
+    const counts = {}
+
+    for (let i = 0; i < iterations; i++) {
+      const randomAnswers = {}
+
+      for (let question = 0; question < 20; question++) {
+        randomAnswers[question] = {
+          answerIndex: Math.floor(Math.random() * 4)
+        }
+      }
+
+      const result = calculateResult(randomAnswers)
+
+      if (result) {
+        counts[result.id] = (counts[result.id] || 0) + 1
+      }
+    }
+
+    const report = personalities.map((personality) => ({
+      personality: personality.id,
+      wins: counts[personality.id] || 0,
+      percentage:
+        ((counts[personality.id] || 0) / iterations * 100).toFixed(2) + '%'
+    }))
+
+    console.table(report)
+
+    return report
+  }
 }

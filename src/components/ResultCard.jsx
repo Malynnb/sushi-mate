@@ -6,10 +6,9 @@ export default function ResultCard({ result, onPlayAgain }) {
   const [sharing, setSharing] = useState(false)
   const [copied, setCopied] = useState(false)
 
-   if (!result) return null
+  if (!result) return null
 
   const personality = result
-
   const cardImage = `/characters/${personality.id}.png`
 
   const shareText = [
@@ -17,7 +16,9 @@ export default function ResultCard({ result, onPlayAgain }) {
     '',
     personality.vibe,
     '',
-    personality.motto ? `My life motto: "${personality.motto}"` : '',
+    personality.motto
+      ? `My life motto: "${personality.motto}"`
+      : '',
     '',
     "Now it's your turn! 👀",
     'Find your Sushi Mate and discover your food identity.',
@@ -38,12 +39,15 @@ export default function ResultCard({ result, onPlayAgain }) {
       await navigator.clipboard.writeText(shareText)
       setCopied(true)
       setTimeout(() => setCopied(false), 2500)
+      return true
     } catch (error) {
       console.error('Could not copy caption:', error)
       alert('Please copy the caption manually.')
+      return false
     }
   }
 
+  // Open the phone's native sharing menu.
   const shareCard = async () => {
     setSharing(true)
 
@@ -78,16 +82,37 @@ export default function ResultCard({ result, onPlayAgain }) {
       } else {
         downloadCard()
         await copyCaption()
-        alert('Your card has been downloaded and your caption copied!')
+        alert(
+          'Your result card has been downloaded. ' +
+          'Your caption is ready to copy!'
+        )
       }
     } catch (error) {
       if (error.name !== 'AbortError') {
         console.error('Sharing failed:', error)
-        alert('Sharing is unavailable. Download your card and copy your caption instead.')
+        alert(
+          'Sharing is unavailable. ' +
+          'Please download your card and copy your caption.'
+        )
       }
     } finally {
       setSharing(false)
     }
+  }
+
+  // Prepare the image and caption for a social media upload.
+  const prepareSocialPost = async (platform) => {
+    downloadCard()
+    await copyCaption()
+
+    alert(
+      `Your Sushi Mate card is ready for ${platform}! 🍣\n\n` +
+      '1. Open ' + platform + '.\n' +
+      '2. Create a new post or story.\n' +
+      '3. Upload your downloaded Sushi Mate card.\n' +
+      '4. Paste your copied caption.\n\n' +
+      'Show everyone which sushi you are!'
+    )
   }
 
   return (
@@ -103,11 +128,22 @@ export default function ResultCard({ result, onPlayAgain }) {
           className="finished-personality-card"
           src={cardImage}
           alt={`${personality.name} personality card`}
-          onError={() => console.error('Missing personality image:', cardImage)}
+          onError={() =>
+            console.error('Missing personality image:', cardImage)
+          }
         />
       </div>
 
       <div className="result-actions">
+
+        <button
+          className="result-share-button"
+          onClick={shareCard}
+          disabled={sharing}
+        >
+          {sharing ? 'PREPARING...' : '↗ SHARE MY RESULT'}
+        </button>
+
         <button
           className="result-download-button"
           onClick={downloadCard}
@@ -116,19 +152,31 @@ export default function ResultCard({ result, onPlayAgain }) {
         </button>
 
         <button
-          className="result-share-button"
-          onClick={shareCard}
-          disabled={sharing}
-        >
-          {sharing ? 'PREPARING...' : 'SHARE MY RESULT ↗'}
-        </button>
-
-        <button
           className="result-caption-button"
           onClick={copyCaption}
         >
           {copied ? '✓ CAPTION COPIED!' : 'COPY MY SHARE CAPTION'}
         </button>
+
+        <div className="social-share-section">
+          <p className="social-share-heading">
+            SHOW OFF YOUR SUSHI IDENTITY
+          </p>
+
+          <button
+            className="instagram-share-button"
+            onClick={() => prepareSocialPost('Instagram')}
+          >
+            📸 PREPARE FOR INSTAGRAM
+          </button>
+
+          <button
+            className="tiktok-share-button"
+            onClick={() => prepareSocialPost('TikTok')}
+          >
+            ♪ PREPARE FOR TIKTOK
+          </button>
+        </div>
 
         <button
           className="result-restart-button"
