@@ -290,7 +290,7 @@ const chooseAnswer = (answerIndex) => {
 
   return (
     <main className="app-shell">
-      
+
 <header className="top-bar">
   <div className="brand-mark">🍣 SUSHI MATE</div>
 
