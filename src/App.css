@@ -260,10 +260,10 @@ button {
   text-shadow: 0 2px 8px #09051c;
 }
 
- {
+ .start-button {
   position: relative;
   isolation: isolate;
-  disp.start-buttonlay: inline-flex;
+  display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 25px;
@@ -290,7 +290,7 @@ button {
   transition: transform 0.2s, filter 0.2s;
 }
 
-./* REFERENCE-STYLE NEON BUTTON */
+/* REFERENCE-STYLE NEON BUTTON */
 .start-button {
   position: relative !important;
   isolation: isolate !important;
