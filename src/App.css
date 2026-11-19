@@ -3054,3 +3054,109 @@ a,
   border-radius: 8px;
   box-shadow: 0 0 18px rgba(66, 245, 255, 0.2);
 }
+
+/* Reliable animated sushi sprites: native SVG elements, no foreignObject */
+.conveyor-svg {
+  overflow: visible;
+  isolation: isolate;
+}
+
+.conveyor-moving-plate {
+  cursor: pointer;
+  pointer-events: all;
+  outline: none;
+}
+
+.conveyor-moving-plate .sushi-svg-plate {
+  fill: url(#sushi-plate-gradient);
+  stroke: #ffe0ef;
+  stroke-width: 3;
+  filter: drop-shadow(0 5px 3px rgba(18, 5, 25, .65))
+    drop-shadow(0 0 8px rgba(255, 105, 177, .65));
+}
+
+.conveyor-moving-plate .sushi-svg-image {
+  image-rendering: pixelated;
+  pointer-events: none;
+}
+
+.conveyor-moving-plate .sushi-svg-name {
+  fill: #fff0f8;
+  stroke: #35102f;
+  stroke-width: 2.5px;
+  paint-order: stroke;
+  font-family: 'Nunito', sans-serif;
+  font-size: 12px;
+  font-weight: 900;
+  pointer-events: none;
+}
+
+.conveyor-moving-plate:focus-visible .sushi-svg-plate,
+.conveyor-moving-plate.is-selected .sushi-svg-plate {
+  stroke: #ffffff;
+  stroke-width: 5;
+  filter: drop-shadow(0 0 9px #fff)
+    drop-shadow(0 0 16px #ff398b);
+}
+
+@media (max-width: 600px) {
+  .conveyor-moving-plate .sushi-svg-plate {
+    rx: 45px;
+    ry: 28px;
+  }
+
+  .conveyor-moving-plate .sushi-svg-image {
+    opacity: 1;
+  }
+
+  .conveyor-moving-plate .sushi-svg-name {
+    font-size: 10px;
+  }
+}
+/* RESULT PAGE — MOBILE LAYOUT FIX */
+@media (max-width: 760px) {
+  .result-screen {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    align-items: start;
+    gap: 28px;
+    width: 100%;
+    max-width: 560px;
+    margin: 20px auto 35px;
+    padding: 0 10px;
+  }
+
+  .result-sidebar {
+    width: 100%;
+    min-width: 0;
+    padding-top: 0;
+    gap: 22px;
+  }
+
+  .result-page {
+    width: 100%;
+    min-width: 0;
+  }
+
+  .community-stats,
+  .sushi-confessions {
+    width: 100%;
+    max-width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
+
+@media (max-width: 420px) {
+  .result-screen {
+    gap: 22px;
+    padding: 0 6px;
+  }
+
+  .sushi-confessions {
+    padding: 16px 14px !important;
+  }
+}
+
+
+

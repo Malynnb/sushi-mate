@@ -1,10 +1,12 @@
-
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 import './ResultCard.css'
 
 export default function ResultCard({ result, onPlayAgain }) {
   const [sharing, setSharing] = useState(false)
   const [copied, setCopied] = useState(false)
+  const [showManualCopy, setShowManualCopy] = useState(false)
+
+  const captionRef = useRef(null)
 
   if (!result) return null
 
@@ -35,19 +37,36 @@ export default function ResultCard({ result, onPlayAgain }) {
   }
 
   const copyCaption = async () => {
+    setCopied(false)
+
+    // First try the modern clipboard API.
     try {
-      await navigator.clipboard.writeText(shareText)
-      setCopied(true)
-      setTimeout(() => setCopied(false), 2500)
-      return true
+      if (navigator.clipboard && window.isSecureContext) {
+        await navigator.clipboard.writeText(shareText)
+        setCopied(true)
+        setShowManualCopy(false)
+
+        setTimeout(() => setCopied(false), 2500)
+        return true
+      }
     } catch (error) {
-      console.error('Could not copy caption:', error)
-      alert('Please copy the caption manually.')
-      return false
+      console.warn('Modern clipboard unavailable:', error)
+    }
+
+    // If Safari blocks automatic copying, show the actual caption.
+    setShowManualCopy(true)
+
+    return false
+  }
+
+  const selectCaption = () => {
+    if (captionRef.current) {
+      captionRef.current.focus()
+      captionRef.current.select()
+      captionRef.current.setSelectionRange(0, shareText.length)
     }
   }
 
-  // Open the phone's native sharing menu.
   const shareCard = async () => {
     setSharing(true)
 
@@ -82,25 +101,18 @@ export default function ResultCard({ result, onPlayAgain }) {
       } else {
         downloadCard()
         await copyCaption()
-        alert(
-          'Your result card has been downloaded. ' +
-          'Your caption is ready to copy!'
-        )
       }
     } catch (error) {
       if (error.name !== 'AbortError') {
         console.error('Sharing failed:', error)
-        alert(
-          'Sharing is unavailable. ' +
-          'Please download your card and copy your caption.'
-        )
+        downloadCard()
+        await copyCaption()
       }
     } finally {
       setSharing(false)
     }
   }
 
-  // Prepare the image and caption for a social media upload.
   const prepareSocialPost = async (platform) => {
     downloadCard()
     await copyCaption()
@@ -110,7 +122,7 @@ export default function ResultCard({ result, onPlayAgain }) {
       '1. Open ' + platform + '.\n' +
       '2. Create a new post or story.\n' +
       '3. Upload your downloaded Sushi Mate card.\n' +
-      '4. Paste your copied caption.\n\n' +
+      '4. Copy the caption shown below the result card.\n\n' +
       'Show everyone which sushi you are!'
     )
   }
@@ -157,6 +169,73 @@ export default function ResultCard({ result, onPlayAgain }) {
         >
           {copied ? '✓ CAPTION COPIED!' : 'COPY MY SHARE CAPTION'}
         </button>
+
+        {showManualCopy && (
+          <div
+            className="manual-caption-box"
+            style={{
+              marginTop: '15px',
+              padding: '16px',
+              border: '1px solid #ff79b7',
+              borderRadius: '8px',
+              background: '#160d30',
+              color: '#fff0dc',
+              width: '100%',
+              boxSizing: 'border-box'
+            }}
+          >
+            <h3 style={{ color: '#ff9bc9', marginTop: 0 }}>
+              Your caption is ready! 🍣
+            </h3>
+
+            <p style={{ fontSize: '13px', lineHeight: 1.5 }}>
+              Automatic copying isn't available in this browser.
+              Tap the text below, select all, and choose Copy.
+            </p>
+
+            <textarea
+              ref={captionRef}
+              readOnly
+              value={shareText}
+              onFocus={(event) => event.target.select()}
+              onClick={selectCaption}
+              rows={8}
+              aria-label="Your Sushi Mate share caption"
+              style={{
+                display: 'block',
+                width: '100%',
+                boxSizing: 'border-box',
+                padding: '12px',
+                border: '1px solid #ff79b7',
+                borderRadius: '5px',
+                background: '#090820',
+                color: '#ffffff',
+                fontSize: '14px',
+                lineHeight: 1.6,
+                resize: 'vertical',
+                WebkitUserSelect: 'text',
+                userSelect: 'text'
+              }}
+            />
+
+            <button
+              type="button"
+              onClick={selectCaption}
+              style={{
+                marginTop: '12px',
+                padding: '11px 18px',
+                border: '1px solid #ff79b7',
+                borderRadius: '5px',
+                background: '#ff286b',
+                color: 'white',
+                fontWeight: 800,
+                cursor: 'pointer'
+              }}
+            >
+              SELECT CAPTION
+            </button>
+          </div>
+        )}
 
         <div className="social-share-section">
           <p className="social-share-heading">

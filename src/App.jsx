@@ -188,8 +188,6 @@ const questions = [
     ]
   }
 ]
-
-
 const sushiPlates = [
   {
     id: 'salmon-nigiri',
@@ -235,41 +233,34 @@ const sushiPlates = [
   }
 ]
 
-
-
-
-
-
 function App() {
   const [started, setStarted] = useState(false)
   const [showSocialClub, setShowSocialClub] = useState(false)
   const [currentQuestion, setCurrentQuestion] = useState(0)
   const [answers, setAnswers] = useState({})
   const [result, setResult] = useState(() => {
-  const savedResult = localStorage.getItem('sushi_mate_result')
-  return savedResult ? JSON.parse(savedResult) : null
-})
+    const savedResult = localStorage.getItem('sushi_mate_result')
+    return savedResult ? JSON.parse(savedResult) : null
+  })
   const [selectedPlate, setSelectedPlate] = useState(null)
 
-
   const nextQuestion = async () => {
-  if (currentQuestion < questions.length - 1) {
-    setCurrentQuestion(currentQuestion + 1)
-  } else {
-    const finalResult = calculateResult(answers)
-    setResult(finalResult)
-    localStorage.setItem('sushi_mate_result', JSON.stringify(finalResult))
+    if (currentQuestion < questions.length - 1) {
+      setCurrentQuestion(currentQuestion + 1)
+    } else {
+      const finalResult = calculateResult(answers)
+      setResult(finalResult)
+      localStorage.setItem('sushi_mate_result', JSON.stringify(finalResult))
 
-    const { error } = await supabase
-      .from('quiz_results')
-      .insert({ personality_id: finalResult.id })
+      const { error } = await supabase
+        .from('quiz_results')
+        .insert({ personality_id: finalResult.id })
 
-    if (error) {
-      console.error('Could not save quiz result:', error)
+      if (error) {
+        console.error('Could not save quiz result:', error)
+      }
     }
   }
-}
-
 
   const restartQuiz = () => {
     setStarted(false)
@@ -279,69 +270,55 @@ function App() {
     setSelectedPlate(null)
   }
 
-const chooseAnswer = (answerIndex) => {
-  setAnswers({
-    ...answers,
-    [currentQuestion]: {
-      answerIndex: answerIndex
-    }
-  })
-}
+  const chooseAnswer = (answerIndex) => {
+    setAnswers({
+      ...answers,
+      [currentQuestion]: {
+        answerIndex: answerIndex
+      }
+    })
+  }
 
   return (
     <main className="app-shell">
+      <header className="top-bar">
+        <div className="brand-mark">🍣 SUSHI MATE</div>
 
-<header className="top-bar">
-  <div className="brand-mark">🍣 SUSHI MATE</div>
+        <div className="top-bar-actions">
+          <button
+            className="social-club-nav"
+            type="button"
+            onClick={() => setShowSocialClub(true)}
+          >
+            <span className="lantern-icon">🏮</span>
+            <span className="lantern-label">SOCIAL CLUB</span>
+          </button>
 
-  <div className="top-bar-actions">
-   <button
-  className="social-club-nav"
-  type="button"
-  onClick={() => setShowSocialClub(true)}
->
-  <span className="lantern-icon">🏮</span>
-  <span className="lantern-label">SOCIAL CLUB</span>
-</button>
+          <span className="version-label">
+            PERSONALITY CLASSIFIER V1.0
+          </span>
+        </div>
+      </header>
 
-    <span className="version-label">
-      PERSONALITY CLASSIFIER V1.0
-    </span>
-  </div>
-</header>
+      {showSocialClub && (
+        <section className="social-club-screen">
+          <div className="social-club-header">
+            <button
+              className="social-club-back"
+              type="button"
+              onClick={() => setShowSocialClub(false)}
+            >
+              ← BACK TO HOME
+            </button>
+          </div>
 
+          <CommunityStats />
 
-
-
-
-
-
-
-
-
-
-
-{showSocialClub && (
-  <section className="social-club-screen">
-    <div className="social-club-header">
-      <button
-        className="social-club-back"
-        type="button"
-        onClick={() => setShowSocialClub(false)}
-      >
-        ← BACK TO HOME
-      </button>
-    </div>
-
-
-
-    <CommunityStats />
-
-    <SushiConfessions
-      personalityId={result?.id || null}
-    />
-  </section>
-)}
+          <SushiConfessions
+            personalityId={result?.id || null}
+          />
+        </section>
+      )}
 
       {!started && !result && !showSocialClub && (
         <section className="landing-screen">
@@ -374,12 +351,6 @@ const chooseAnswer = (answerIndex) => {
               Sushi soulmate, best match and worst match.
             </p>
           </div>
-
-
-
-
-
-
 
           <div className="sushi-restaurant">
             <div className="sakura-layer" aria-hidden="true">
@@ -415,13 +386,20 @@ const chooseAnswer = (answerIndex) => {
                     d="M 150 350 C 85 322 48 286 48 230 V 145 C 48 57 125 18 245 18 H 805 C 925 18 1002 57 1002 145 V 230 C 1002 286 965 322 900 350 L 900 270 C 947 248 958 225 958 195 V 150 C 958 96 895 66 805 66 H 245 C 155 66 92 96 92 150 V 195 C 92 225 103 248 150 270 Z"
                   />
 
+                  <radialGradient id="sushi-plate-gradient">
+                    <stop offset="0%" stopColor="#fff8fb" />
+                    <stop offset="68%" stopColor="#ffb6d6" />
+                    <stop offset="100%" stopColor="#e84d9b" />
+                  </radialGradient>
+
                   <linearGradient
                     id="conveyor-deck-gradient"
                     x1="0"
                     y1="0"
                     x2="0"
                     y2="1"
-                  >
+                  
+                                    >
                     <stop offset="0%" stopColor="#76264f" />
                     <stop offset="50%" stopColor="#4b1940" />
                     <stop offset="100%" stopColor="#29102f" />
@@ -466,64 +444,54 @@ const chooseAnswer = (answerIndex) => {
                 />
 
                 {sushiPlates.map((plate, index) => (
-                  <g className="conveyor-moving-plate" key={plate.id}>
+                  <g
+                    className={`conveyor-moving-plate ${selectedPlate?.id === plate.id ? 'is-selected' : ''}`}
+                    key={plate.id}
+                    role="button"
+                    tabIndex="0"
+                    aria-label={`Select ${plate.name}`}
+                    aria-pressed={selectedPlate?.id === plate.id}
+                    onClick={() =>
+                      setSelectedPlate(selectedPlate?.id === plate.id ? null : plate)
+                    }
+                    onKeyDown={(event) => {
+                      if (event.key === 'Enter' || event.key === ' ') {
+                        event.preventDefault()
+                        setSelectedPlate(selectedPlate?.id === plate.id ? null : plate)
+                      }
+                    }}
+                  >
                     <animateMotion
                       dur="36s"
                       begin={`${index * -6}s`}
                       repeatCount="indefinite"
                       rotate="0"
                     >
-                      <mpath
-                      href="#sushi-conveyor-loop"
-                      xlinkHref="#sushi-conveyor-loop"
-                    />
+                      <mpath href="#sushi-conveyor-loop" xlinkHref="#sushi-conveyor-loop" />
                     </animateMotion>
 
-                    <foreignObject
-                      x="-130"
-                      y="-125"
-                      width="260"
-                      height="240"
-                      overflow="visible"
-                    >
-                      <div
-                        xmlns="http://www.w3.org/1999/xhtml"
-                        style={{
-                          width: '100%',
-                          height: '100%',
-                          display: 'flex',
-                          alignItems: 'center',
-                          justifyContent: 'center',
-                          overflow: 'visible'
-                        }}
-                      >
-                        <button
-                          className={`sushi-plate ${
-                            selectedPlate?.id === plate.id ? 'is-selected' : ''
-                          }`}
-                          type="button"
-                          onClick={() =>
-                            setSelectedPlate(
-                              selectedPlate?.id === plate.id ? null : plate
-                            )
-                          }
-                          aria-label={`Select ${plate.name}`}
-                          aria-pressed={selectedPlate?.id === plate.id}
-                        >
-                          <img
-                            className="pixel-sushi-image"
-                            src={plate.image}
-                            alt={plate.name}
-                            draggable="false"
-                          />
-
-                          <span className="plate-preview">
-                            <strong>{plate.name}</strong>
-                            <span>{plate.title}</span>
-                          </span>
-                        </button>
-                      </div>
-                    </foreignObject>
+                    {/* Native SVG artwork avoids foreignObject, which is unreliable
+                        when animated inside SVG on iOS Safari. */}
+                    <ellipse
+                      className="sushi-svg-plate"
+                      cx="0"
+                      cy="0"
+                      rx="57"
+                      ry="34"
+                    />
+                    <image
+                      className="sushi-svg-image"
+                      href={plate.image}
+                      xlinkHref={plate.image}
+                      x="-43"
+                      y="-33"
+                      width="86"
+                      height="66"
+                      preserveAspectRatio="xMidYMid meet"
+                    />
+                    <text className="sushi-svg-name" x="0" y="49" textAnchor="middle">
+                      {plate.name}
+                    </text>
                   </g>
                 ))}
               </svg>
@@ -540,28 +508,17 @@ const chooseAnswer = (answerIndex) => {
               TAKE THE TEST <span>→</span>
             </button>
 
-
-
-
-
-
-
-
-{localStorage.getItem('sushi_mate_result') && (
-  <button
-    className="restaurant-start-button"
-    type="button"
-    onClick={() => {
-      setResult(JSON.parse(localStorage.getItem('sushi_mate_result')))
-    }}
-  >
-    RETURN TO MY SUSHI <span>→</span>
-  </button>
-)}
-
-
-
-
+            {localStorage.getItem('sushi_mate_result') && (
+              <button
+                className="restaurant-start-button"
+                type="button"
+                onClick={() => {
+                  setResult(JSON.parse(localStorage.getItem('sushi_mate_result')))
+                }}
+              >
+                RETURN TO MY SUSHI <span>→</span>
+              </button>
+            )}
 
             {selectedPlate && (
               <div className="selected-preview">
@@ -629,7 +586,7 @@ const chooseAnswer = (answerIndex) => {
               {questions[currentQuestion].answers.map((answer, index) => (
                 <button
                   className={`answer-option ${
-                    answers[currentQuestion]?.answerIndex === index? 'selected' : ''
+                    answers[currentQuestion]?.answerIndex === index ? 'selected' : ''
                   }`}
                   type="button"
                   key={index}
@@ -673,20 +630,19 @@ const chooseAnswer = (answerIndex) => {
         </section>
       )}
 
-{result && (
-  <section className="result-screen">
-    <ResultCard
-      result={result}
-      onPlayAgain={restartQuiz}
-    />
+      {result && (
+        <section className="result-screen">
+          <ResultCard
+            result={result}
+            onPlayAgain={restartQuiz}
+          />
 
-    <div className="result-sidebar">
-      <CommunityStats />
-
-      <SushiConfessions personalityId={result.id} />
-    </div>
-  </section>
-)}
+          <div className="result-sidebar">
+            <CommunityStats />
+            <SushiConfessions personalityId={result.id} />
+          </div>
+        </section>
+      )}
 
       <footer>
         <span>SUSHI MATE © 2026</span>
@@ -697,3 +653,4 @@ const chooseAnswer = (answerIndex) => {
 }
 
 export default App
+
